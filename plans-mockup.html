@@ -325,7 +325,7 @@
       gap: 14px;
     }
 
-    .plan-card, .free-strip, .credit-panel {
+    .plan-card, .credit-panel {
       min-width: 0;
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
@@ -475,33 +475,6 @@
       transform: translateY(-1px);
     }
 
-    .free-strip {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px 16px;
-      margin-top: 12px;
-      padding: 12px 18px;
-    }
-
-    .free-strip-details {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 4px 12px;
-    }
-
-    .free-strip h3 {
-      font-size: 0.875rem;
-      font-weight: 650;
-    }
-
-    .free-strip p { color: var(--muted); }
-    .free-strip-pricing { display: grid; text-align: end; }
-    .free-strip-price { color: var(--muted); white-space: nowrap; }
-    .free-strip-price strong { color: var(--text); font-weight: 650; }
-
     .credit-icon {
       width: 18px;
       height: 18px;
@@ -574,6 +547,14 @@
       .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
+    @media (min-width: 54rem) {
+      .plan-grid-marketstream { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 80rem) {
+      .plan-grid-marketstream { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 41rem) {
       .header-content {
         display: grid;
@@ -602,7 +583,6 @@
       .product-tab { --tab-padding: 8px; font-size: 0.8125rem; }
       .product-tab img, .credit-icon { width: 16px; height: 16px; }
       .panel-heading { margin-top: 18px; }
-      .free-strip-pricing { text-align: start; }
     }
 
     @media (max-width: 36rem) {
@@ -699,7 +679,25 @@
           </button>
         </div>
       </header>
-      <div class="plan-grid">
+      <div class="plan-grid plan-grid-marketstream">
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Free</h3>
+            </div>
+            <p class="plan-price">
+              <span class="plan-amount">$0</span><span class="price-period">forever</span>
+              <span class="price-equivalent">No card needed</span>
+            </p>
+            <p class="plan-button plan-button-status">Always included</p>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li>Charts on every market</li>
+            </ul>
+          </div>
+        </article>
+
         <article class="plan-card">
           <header class="plan-card-header">
             <div class="plan-title">
@@ -797,16 +795,6 @@
           </div>
         </article>
       </div>
-      <article class="free-strip">
-        <div class="free-strip-details">
-          <h3>MarketStream Free</h3>
-          <p>Charts on every market. Included with every account.</p>
-        </div>
-        <div class="free-strip-pricing">
-          <span class="free-strip-price"><strong>$0</strong> forever</span>
-          <span class="price-equivalent">No card needed</span>
-        </div>
-      </article>
     </section>
 
     <section id="automation-panel" role="tabpanel" aria-labelledby="automation-tab" hidden>
