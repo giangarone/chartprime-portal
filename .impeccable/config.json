@@ -38,6 +38,15 @@
         ],
         "createdAt": "2026-11-16T12:56:05.366Z",
         "reason": "Assistant: desktop and mobile renders show the charge rows inset by 20px and 15px respectively via padding-inline, plus 17px of vertical row padding. The detector reports the inline edges as flush."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "cancel-mockup.html"
+        ],
+        "createdAt": "2026-11-16T13:00:27.706Z",
+        "reason": "Assistant: the cancellation flow uses the typography established in the existing portal mockups."
       }
     ]
   }

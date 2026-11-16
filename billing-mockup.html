@@ -348,12 +348,6 @@
 
     .cancel-control { color: var(--muted); }
 
-    .cancel-note {
-      margin-top: 8px;
-      color: var(--secondary);
-      font-size: 0.8125rem;
-    }
-
     .payment-guidance {
       margin-top: 18px;
       padding: 16px 0 0;
@@ -565,12 +559,10 @@
             </header>
             <div class="card-actions">
               <a class="control" href="plans-mockup.html#marketstream" aria-describedby="marketstream-charge-heading">Change plan</a>
-              <button class="text-control cancel-control" type="button" aria-expanded="false"
-                aria-controls="marketstream-cancellation" aria-describedby="marketstream-charge-heading">
-                Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
-              </button>
+              <a class="text-control cancel-control" href="cancel-mockup.html#marketstream" aria-describedby="marketstream-charge-heading">
+                Cancel plan <span class="chevron" aria-hidden="true"></span>
+              </a>
             </div>
-            <p class="cancel-note" id="marketstream-cancellation" hidden>If you cancel, you keep access through the end of your billing period.</p>
           </article>
           <article class="charge-row" id="prime-automation-charge" aria-labelledby="prime-automation-charge-heading">
             <header class="charge-row-header">
@@ -590,12 +582,10 @@
             </header>
             <div class="card-actions">
               <a class="control" href="plans-mockup.html#prime-automation" aria-describedby="prime-automation-charge-heading">Change plan</a>
-              <button class="text-control cancel-control" type="button" aria-expanded="false"
-                aria-controls="prime-automation-cancellation" aria-describedby="prime-automation-charge-heading">
-                Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
-              </button>
+              <a class="text-control cancel-control" href="cancel-mockup.html#prime-automation" aria-describedby="prime-automation-charge-heading">
+                Cancel plan <span class="chevron" aria-hidden="true"></span>
+              </a>
             </div>
-            <p class="cancel-note" id="prime-automation-cancellation" hidden>If you cancel, you keep access through the end of your billing period.</p>
           </article>
         </div>
       </section>
