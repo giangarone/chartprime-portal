@@ -1,0 +1,13 @@
+# macOS metadata
+.DS_Store
+/Icon?
+
+# Local assistant tooling
+/.agent/
+/.agents/
+/.claude/
+/.codex/
+/.gemini/
+/.opencode/
+/.impeccable/*
+!/.impeccable/config.json

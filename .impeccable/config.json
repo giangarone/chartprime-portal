@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "overview-mockup.html"
+        ],
+        "createdAt": "2026-11-16T11:47:58.610Z",
+        "reason": "Assistant: Inter is an intentional neutral UI face for this standalone overview mockup, where legibility and continuity with the supplied reference matter."
+      }
+    ]
+  }
+}
