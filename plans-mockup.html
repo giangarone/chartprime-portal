@@ -325,7 +325,7 @@
       gap: 14px;
     }
 
-    .plan-card, .credit-panel {
+    .plan-card {
       min-width: 0;
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
@@ -459,22 +459,6 @@
       font-weight: 600;
     }
 
-    .feature-group {
-      margin-block: 12px 5px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .feature-list-upcoming li::before {
-      width: 7px;
-      height: 7px;
-      margin-inline: 1px;
-      border: 1px solid var(--muted);
-      border-radius: 50%;
-      transform: translateY(-1px);
-    }
-
     .credit-icon {
       width: 18px;
       height: 18px;
@@ -482,40 +466,7 @@
       color: var(--secondary);
     }
 
-    .credit-panel {
-      max-width: 760px;
-      padding: 4px 18px;
-    }
-
-    .credit-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .credit-table tr:not(:last-child),
-    .credit-table thead tr {
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .credit-table th, .credit-table td { padding: 10px 10px 10px 0; }
-
-    .credit-table thead th {
-      color: var(--muted);
-      font-size: 0.8125rem;
-      font-weight: 550;
-    }
-
-    .credit-table tbody th { font-weight: 600; }
-
-    .credit-table th:last-child, .credit-table td:last-child {
-      width: 1%;
-      padding-right: 0;
-      text-align: right;
-    }
-
-    .credit-table .plan-button { width: auto; white-space: nowrap; }
+    .credit-pack-card { font-variant-numeric: tabular-nums; }
 
     .plan-change-note {
       max-width: 68ch;
@@ -548,11 +499,11 @@
     }
 
     @media (min-width: 54rem) {
-      .plan-grid-marketstream { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .plan-grid-five { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (min-width: 80rem) {
-      .plan-grid-marketstream { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .plan-grid-five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
     }
 
     @media (max-width: 41rem) {
@@ -597,8 +548,6 @@
 
     @media (max-width: 23rem) {
       .product-tab { --tab-padding: 2px; }
-      .credit-panel { padding-inline: 10px; }
-      .credit-table .plan-button { padding-inline: 8px; }
     }
   </style>
 </head>
@@ -679,7 +628,7 @@
           </button>
         </div>
       </header>
-      <div class="plan-grid plan-grid-marketstream">
+      <div class="plan-grid plan-grid-five">
         <article class="plan-card">
           <header class="plan-card-header">
             <div class="plan-title">
@@ -693,7 +642,10 @@
           </header>
           <div class="plan-features">
             <ul class="feature-list">
-              <li>Charts on every market</li>
+              <li>Live crypto spot &amp; perps</li>
+              <li>Delayed forex charts</li>
+              <li>Futures (10m delay)</li>
+              <li>US stocks/ETFs (15m lag)</li>
             </ul>
           </div>
         </article>
@@ -761,9 +713,6 @@
               <li>Real-time L1 market data</li>
               <li>Dark Pool activity</li>
               <li>Institutional print tracking</li>
-            </ul>
-            <p class="feature-group">Coming soon</p>
-            <ul class="feature-list feature-list-upcoming">
               <li>High-impact news alerts</li>
               <li>Trading Journal</li>
             </ul>
@@ -901,21 +850,10 @@
       <header class="panel-heading">
         <div>
           <h2>Buy AI credits</h2>
-          <p>One balance across ChartPrime apps. Credits never expire.</p>
+          <p>One balance across ChartPrime apps.</p>
         </div>
       </header>
-      <div class="credit-panel">
-        <table class="credit-table" aria-label="AI credit packs">
-          <thead>
-            <tr>
-              <th scope="col">AI credits</th>
-              <th scope="col">One-time price</th>
-              <th scope="col">Purchase</th>
-            </tr>
-          </thead>
-          <tbody id="credit-pack-rows"></tbody>
-        </table>
-      </div>
+      <div class="plan-grid plan-grid-five" id="credit-pack-cards"></div>
     </section>
 
     <footer>
@@ -927,12 +865,23 @@
     </footer>
   </main>
 
-  <template id="credit-pack-row">
-    <tr>
-      <th scope="row"></th>
-      <td data-pack-price></td>
-      <td><a class="plan-button">Buy credits</a></td>
-    </tr>
+  <template id="credit-pack-card">
+    <article class="plan-card credit-pack-card">
+      <header class="plan-card-header">
+        <div class="plan-title">
+          <h3 data-pack-credits></h3>
+        </div>
+        <p class="plan-price"><span class="plan-amount" data-pack-price></span></p>
+        <a class="plan-button">Buy credits</a>
+      </header>
+      <div class="plan-features">
+        <ul class="feature-list">
+          <li>Paid once</li>
+          <li>Added to your balance</li>
+          <li>Credits never expire</li>
+        </ul>
+      </div>
+    </article>
   </template>
 
   <script src="credit-packs.js"></script>
@@ -1001,20 +950,20 @@
     });
 
     const creditCount = new Intl.NumberFormat('en-US');
-    const creditRows = document.getElementById('credit-pack-rows');
-    const creditRow = document.getElementById('credit-pack-row');
+    const creditCards = document.getElementById('credit-pack-cards');
+    const creditCardTemplate = document.getElementById('credit-pack-card');
 
     for (const [credits, price] of creditPacks) {
-      const row = creditRow.content.cloneNode(true);
+      const card = creditCardTemplate.content.cloneNode(true);
       const amount = creditCount.format(credits);
       const cost = currency.format(price);
-      const purchase = row.querySelector('a');
+      const purchase = card.querySelector('a');
 
-      row.querySelector('th').textContent = amount;
-      row.querySelector('[data-pack-price]').textContent = cost;
+      card.querySelector('[data-pack-credits]').textContent = amount + ' credits';
+      card.querySelector('[data-pack-price]').textContent = cost;
       purchase.href = 'switch-plan-mockup.html?credits=' + credits;
-      purchase.setAttribute('aria-label', 'Buy ' + amount + ' AI credits for ' + cost);
-      creditRows.append(row);
+      purchase.setAttribute('aria-label', 'Buy credits (' + amount + ' AI credits for ' + cost + ')');
+      creditCards.append(card);
     }
 
     const returningToYearly = new URLSearchParams(location.search).get('period') === 'yearly';
