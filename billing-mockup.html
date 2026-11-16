@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Billing | ChartPrime</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0c0c0c;
+      --surface: #151515;
+      --raised: #202020;
+      --border: #2b2b2b;
+      --divider: #272727;
+      --text: #f4f4f4;
+      --secondary: #b9b9b9;
+      --muted: #a0a0a0;
+      --accent: #cec2ff;
+      --success: #7ce1b0;
+      --success-surface: #1d3128;
+      --card-radius: 14px;
+      --control-radius: 8px;
+      --page-gutter: clamp(20px, 4.2vw, 64px);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 100%;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, p, dl, dd { margin: 0; }
+    a { color: inherit; }
+    button { appearance: none; font: inherit; color: inherit; cursor: pointer; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--background);
+    }
+
+    .page-width {
+      width: min(100% - var(--page-gutter) * 2, 1320px);
+      margin-inline: auto;
+    }
+
+    .site-header { border-bottom: 1px solid var(--divider); }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      min-height: 67px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      flex: none;
+      border-radius: 4px;
+    }
+
+    .brand img {
+      display: block;
+      width: 150px;
+      height: auto;
+    }
+
+    .navigation {
+      display: flex;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover, .nav-item[aria-current] { color: var(--text); }
+    .nav-item[aria-current] { font-weight: 600; }
+
+    .nav-item[aria-current]::after {
+      content: "";
+      position: absolute;
+      inset: auto 6px -1px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .account-button {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-left: auto;
+      padding: 3px 4px;
+      border: 0;
+      border-radius: var(--control-radius);
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .account-button:hover .avatar { background: var(--raised); }
+
+    .chevron {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      flex: none;
+      border: solid currentColor;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(-45deg);
+    }
+
+    .chevron-down { transform: translateY(-2px) rotate(45deg); }
+
+    main { padding-block: 44px 64px; }
+
+    h1 {
+      margin-bottom: 31px;
+      font-size: 2.25rem;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+    }
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .billing-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .billing-grid > section {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--surface);
+    }
+
+    .billing-card {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .card-heading { flex: 1; min-width: 0; }
+
+    .card-heading h3 {
+      font-size: 1rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+
+    .card-heading p {
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .icon-tile {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: none;
+      border-radius: 10px;
+      background: var(--raised);
+      color: var(--secondary);
+    }
+
+    .icon-tile img {
+      display: block;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .card-icon {
+      width: 20px;
+      height: 14px;
+      border: 1.5px solid currentColor;
+      border-radius: 3px;
+    }
+
+    .card-icon::before {
+      content: "";
+      display: block;
+      margin-top: 3px;
+      border-top: 1.5px solid currentColor;
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: var(--success-surface);
+      color: var(--success);
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .charge-details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-block: 18px 19px;
+      padding: 16px 0 0;
+      border-top: 1px solid var(--divider);
+    }
+
+    dt {
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    dd { font-variant-numeric: tabular-nums; }
+
+    .charge-details dd {
+      display: flex;
+      align-items: center;
+      min-height: 2.3rem;
+    }
+
+    .charge-amount {
+      font-size: 2rem;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+    }
+
+    .charge-date {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 9px 14px;
+    }
+
+    .control, .text-control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 38px;
+      border-radius: var(--control-radius);
+      background: transparent;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .control {
+      padding: 6px 13px;
+      border: 1px solid #414141;
+    }
+
+    .control:hover { background: var(--raised); }
+
+    .text-control {
+      padding: 6px 0;
+      border: 0;
+      color: var(--accent);
+    }
+
+    .text-control:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    .cancel-control { color: var(--muted); }
+
+    .cancel-note {
+      margin-top: 8px;
+      color: var(--secondary);
+      font-size: 0.8125rem;
+    }
+
+    .payment-guidance {
+      margin-top: 18px;
+      padding: 16px 0 0;
+      border-top: 1px solid var(--divider);
+    }
+
+    .payment-guidance h4 {
+      margin: 0 0 4px;
+      font-size: 0.875rem;
+      font-weight: 650;
+    }
+
+    .payment-guidance p {
+      max-width: 39ch;
+      color: var(--secondary);
+      font-size: 0.875rem;
+    }
+
+    .payment-guidance .text-control { margin-top: 7px; }
+
+    .history { margin-top: 29px; }
+
+    .history-panel { padding: 0 18px; }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .history-table th, .history-table td { padding: 10px 12px 10px 0; }
+
+    .history-table thead {
+      border-bottom: 1px solid var(--divider);
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    .history-table th { font-weight: 550; }
+    .history-table th:first-child { width: 19%; }
+
+    .history-table th:nth-child(3),
+    .history-table th:nth-child(4) { width: 14%; }
+
+    .history-table th:last-child, .history-table td:last-child {
+      width: 1%;
+      padding-right: 0;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .history-table tbody tr + tr { border-top: 1px solid var(--divider); }
+    .history-date { color: var(--secondary); white-space: nowrap; }
+    .history-description, .history-amount { font-weight: 600; }
+    .history-amount { white-space: nowrap; }
+
+    .text-control .chevron-down { margin-right: 2px; }
+    .text-control[aria-expanded="true"] .chevron-down { transform: translateY(1px) rotate(225deg); }
+
+    .receipt-details {
+      padding: 15px 0 18px;
+      border-top: 1px solid var(--divider);
+    }
+
+    .receipt-details h3 {
+      margin-bottom: 9px;
+      font-size: 0.875rem;
+      font-weight: 650;
+    }
+
+    .receipt-details dl {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px 16px;
+    }
+
+    .help-contact {
+      margin-top: 19px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .help-contact a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 53rem) {
+      .billing-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    }
+
+    @media (max-width: 41rem) {
+      .header-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 12px;
+        row-gap: 0;
+        min-height: 0;
+        padding-top: 10px;
+      }
+
+      .brand { justify-self: start; }
+      .brand img { width: 137px; }
+      .account-button { grid-area: 1 / 2; }
+      .navigation {
+        grid-column: 1 / -1;
+        gap: clamp(14px, 5vw, 28px);
+        min-height: 46px;
+      }
+
+      .nav-item { padding-inline: 2px; }
+      .nav-item[aria-current]::after { inset-inline: 2px; }
+      main { padding-block: 30px 42px; }
+      h1 { margin-bottom: 24px; font-size: 1.875rem; }
+      .billing-card { padding: 15px; }
+      .charge-details dd { min-height: 2.0125rem; }
+      .charge-amount { font-size: 1.75rem; }
+      .charge-date { font-size: 1.0625rem; }
+
+      .history-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
+
+      .history-panel { padding-inline: 14px; }
+
+      .history-table, .history-table tbody { display: block; }
+
+      .history-table tbody tr {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "description amount" "date status" "receipt receipt";
+        align-items: center;
+        gap: 3px 9px;
+        padding-block: 12px 5px;
+      }
+
+      .history-table td, .history-table td:last-child { width: auto; padding: 0; }
+      .history-description { grid-area: description; }
+      .history-amount { grid-area: amount; text-align: right; }
+      .history-date { grid-area: date; font-size: 0.8125rem; }
+      .history-status { grid-area: status; justify-self: end; }
+      .history-table td.history-receipt { grid-area: receipt; text-align: left; }
+
+      .receipt-details dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    }
+  </style>
+</head>
+<body id="top">
+  <!-- Billing preview with sample account and payment data. -->
+  <header class="site-header">
+    <div class="page-width header-content">
+      <a class="brand" href="overview-mockup.html">
+        <img src="data:image/webp;base64,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" alt="ChartPrime" width="304" height="48">
+      </a>
+      <nav class="navigation" aria-label="Portal">
+        <a class="nav-item" href="overview-mockup.html">Overview</a>
+        <a class="nav-item" href="plans-mockup.html">Plans</a>
+        <a class="nav-item" href="#top" aria-current="page">Billing</a>
+        <button class="nav-item" type="button">Account</button>
+      </nav>
+      <button class="account-button" type="button" aria-label="Gian’s account menu">
+        <span class="avatar" aria-hidden="true">GG</span>
+        <span class="chevron chevron-down" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page-width">
+    <h1>Billing</h1>
+
+    <div class="billing-grid">
+      <section aria-labelledby="upcoming-heading">
+        <header class="section-heading">
+          <h2 id="upcoming-heading">Next charge</h2>
+        </header>
+        <article class="panel billing-card">
+          <header class="card-header">
+            <span class="icon-tile">
+              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDE5MjcgMTM2OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxuczphZmZpbml0eT0iaHR0cHM6Ly93d3cuYWZmaW5pdHkuc3R1ZGlvLyIgc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoyOyI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC0yMDc5NC44NzU4NjgsLTY2MzQ0LjY1NDYzMykiPgogICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDMuNjc3NTMsMCwwLDMuNjc3NTMsMTk3NzIuMDg4ODY1LDY1MDQzLjA3MTE0MikiPgogICAgICAgICAgICA8cGF0aCBkPSJNNDY0LjI2Niw2MTcuMTE2QzQ0Ny40ODEsNTc2LjgzIDQxOS42MzEsNTQxLjA1NyAzODMuODY2LDUxMi4wNkwzODMuODY2LDcyNi4wNzFMMzI2LjQxOCw3MjYuMDcxQzI5OS43NDIsNzI2LjA3MSAyNzguMTE4LDcwNC40NDcgMjc4LjExOCw2NzcuNzcyTDI3OC4xMTgsMzkzLjY4M0MyNzguMTE4LDM4MS43NjYgMjgzLjk3OCwzNzAuNjEyIDI5My43OTEsMzYzLjg1MkMzMDMuNjA0LDM1Ny4wOTEgMzE2LjEyNywzNTUuNTU2IDMyNy4yNDksMzU5LjgzNUMzNDYuOTM2LDM2Ny40MDkgMzY1Ljg0LDM3Ni4yMjMgMzgzLjg2NiwzODYuMDkyQzQzOC43Myw0MTYuMTMgNDg1LjI0Miw0NTYuNDg2IDUxOS45NCw1MDMuODMzQzUyNS4yNTcsNTExLjA4OCA1MzAuMjk3LDUxOC41MDggNTM1LjA0Nyw1MjYuMDhDNTY4LjgwNSw1NzkuODk1IDU4Ny45MjEsNjQxLjM5OCA1ODcuOTIxLDcwNi4yOTJDNTg3LjkyMSw3MTcuMjE2IDU3OS4wNjYsNzI2LjA3MSA1NjguMTQyLDcyNi4wNzFMNTAxLjk1Miw3MjYuMDcxQzQ5Ni43MDYsNzI2LjA3MSA0OTEuNjc1LDcyMy45ODggNDg3Ljk2Niw3MjAuMjc4QzQ4NC4yNTcsNzE2LjU2OSA0ODIuMTczLDcxMS41MzggNDgyLjE3Myw3MDYuMjkyQzQ4Mi4xNzMsNjc0LjkxMSA0NzUuODU4LDY0NC45MzggNDY0LjI2Niw2MTcuMTE2WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMSk7Ii8+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDUuNTU1NTk0LDAsMCw1LjU1NTU5NCwtMTA0OC4yMTU5MywtMzU0Ni43NzU3MzQpIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0zMTMuOTgxLDcyOS4xOThDMzAyLjA2Myw3MzguMDk1IDI5NC41MDMsNzUwLjk3OSAyOTQuNTAzLDc2NS41NDdDMjk0LjUwMyw3NjYuNzQgMjk0LjQ2Nyw3NjcuOTI3IDI5NC4zOTYsNzY5LjEwN0wyNzUuNTc1LDc2OS4xMDdDMjc1LjUwNCw3NjcuOTI3IDI3NS40NjgsNzY2Ljc0IDI3NS40NjgsNzY1LjU0N0MyNzUuNDY4LDc1My44NjYgMjc4LjkwOSw3NDIuNzk2IDI4NC45ODUsNzMzLjEwOUMyOTEuNzUyLDcyMi4zMjEgMzAxLjc4OCw3MTMuMjUgMzEzLjk4MSw3MDYuOTY0QzMxNy4yOCw3MDUuMjYzIDMyMC43MzYsNzAzLjc2NSAzMjQuMzI5LDcwMi40OTRDMzI2LjMxOSw3MDEuNzkgMzI4LjUyNiw3MDIuMDk3IDMzMC4yNDgsNzAzLjMxNUMzMzEuOTcxLDcwNC41MzQgMzMyLjk5NSw3MDYuNTEyIDMzMi45OTUsNzA4LjYyMkMzMzMuMDE1LDcxMy45MDMgMzMzLjAxNSw3MTkuNjMzIDMzMy4wMTUsNzE5LjYzM0MzMzMuMDEyLDcxOS42MzMgMzMzLjAwOSw3MTkuNjM0IDMzMy4wMDYsNzE5LjYzNUMzMzMuMDE1LDczMy4wODUgMzMzLjAxNSw3NTAuMjQzIDMzMy4wMTUsNzYwLjQxM0MzMzMuMDE1LDc2NS4yMTUgMzI5LjEyMyw3NjkuMTA3IDMyNC4zMjEsNzY5LjEwN0wzMTMuOTgxLDc2OS4xMDdMMzEzLjk4MSw3MjkuMTk4WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMik7Ii8+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS41MTA2ODYsMCwwLDEuNTEwNjg2LC04NDUxLjIyNzkyNCwtOTQwMDcuOTI4NzEyKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTkwMS42MTksNjI2MzcuMTM0QzU5MDcuNTc4LDYyNjE1LjkwNyA1OTE2LjY3NCw2MjU5NS42ODEgNTkyOC40NzMsNjI1NzYuODczQzU5MzEuNjE3LDYyNTcxLjg2IDU5MzQuOTUzLDYyNTY2Ljk0OSA1OTM4LjQ3Myw2MjU2Mi4xNDZDNTk0MS45OTMsNjI1NjYuOTQ5IDU5NDUuMzI5LDYyNTcxLjg2IDU5NDguNDczLDYyNTc2Ljg3M0M1OTI2LjEyNiw2MjYxMi40OTYgNTkxMy40NzMsNjI2NTMuMjA4IDU5MTMuNDczLDYyNjk2LjE2NEM1OTEzLjQ3Myw2MjY3NS4zOTIgNTkwOS4yOTMsNjI2NTUuNTUxIDU5MDEuNjE5LDYyNjM3LjEzNFoiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4xOyIvPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJfTGluZWFyMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDI1Ni45MjkxMDMsMCwwLDI1Ni45MjkxMDMsMjc4LjExNzg4Nyw0ODEuNDYxNjk1KSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMjU0LDIwOCw1KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIxMCw3NCwxMzkpO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il9MaW5lYXIyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoLTQxLjQzMjY1MiwwLC0wLC00MS40MzI2NTIsMzMzLjAxNTM0NSw3MjQuMjgyMjMxKSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTI3LDUsMjU0KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIzNSwxMDUsMTQ3KTtzdG9wLW9wYWNpdHk6MSIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+Cjwvc3ZnPgo=" alt="" width="24" height="24">
+            </span>
+            <div class="card-heading">
+              <h3>MarketStream Elite</h3>
+              <p>Monthly subscription</p>
+            </div>
+            <span class="status-tag">Active</span>
+          </header>
+          <dl class="charge-details">
+            <div>
+              <dt>Amount</dt>
+              <dd class="charge-amount">$199.00</dd>
+            </div>
+            <div>
+              <dt>Scheduled for</dt>
+              <dd class="charge-date"><time datetime="2026-12-15">Dec 15, 2026</time></dd>
+            </div>
+          </dl>
+          <div class="card-actions">
+            <a class="control" href="plans-mockup.html#marketstream">Change plan</a>
+            <button class="text-control cancel-control" type="button" aria-expanded="false" aria-controls="cancellation-details">
+              Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="cancel-note" id="cancellation-details" hidden>If you cancel, you keep access through the end of your billing period.</p>
+        </article>
+      </section>
+
+      <section aria-labelledby="payment-heading">
+        <header class="section-heading">
+          <h2 id="payment-heading">Payment method</h2>
+        </header>
+        <article class="panel billing-card">
+          <header class="card-header">
+            <span class="icon-tile" aria-hidden="true"><span class="card-icon"></span></span>
+            <div class="card-heading">
+              <h3>Visa ending in 4242</h3>
+              <p>Expires 02/30</p>
+            </div>
+          </header>
+          <div class="payment-guidance">
+            <h4>Update your card</h4>
+            <p>Use the card update link in a payment email from Commas, our payment partner.</p>
+            <a class="text-control" href="mailto:support@chartprime.com?subject=Update%20payment%20method">
+              Contact support <span class="chevron" aria-hidden="true"></span>
+            </a>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <section class="history" aria-labelledby="history-heading">
+      <header class="section-heading">
+        <h2 id="history-heading">Payment history</h2>
+        <p>Last 12 months</p>
+      </header>
+      <div class="panel history-panel">
+        <table class="history-table" role="table" aria-labelledby="history-heading">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader">Date</th>
+              <th scope="col" role="columnheader">Description</th>
+              <th scope="col" role="columnheader">Amount</th>
+              <th scope="col" role="columnheader">Status</th>
+              <th scope="col" role="columnheader">Receipt</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            <tr role="row">
+              <td class="history-date" role="cell"><time datetime="2026-11-15">Nov 15, 2026</time></td>
+              <td class="history-description" role="cell">MarketStream Elite</td>
+              <td class="history-amount" role="cell">$199.00</td>
+              <td class="history-status" role="cell"><span class="status-tag">Paid</span></td>
+              <td class="history-receipt" role="cell">
+                <button class="text-control receipt-control" type="button" aria-expanded="false" aria-controls="receipt-preview"
+                  data-label-collapsed="View receipt" data-label-expanded="Hide receipt">
+                  <span class="receipt-label">View receipt</span>
+                  <span class="chevron chevron-down" aria-hidden="true"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <section class="receipt-details" id="receipt-preview" aria-labelledby="receipt-heading" hidden>
+          <h3 id="receipt-heading">Receipt preview</h3>
+          <dl>
+            <div>
+              <dt>Subscription</dt>
+              <dd>MarketStream Elite</dd>
+            </div>
+            <div>
+              <dt>Paid on</dt>
+              <dd><time datetime="2026-11-15">Nov 15, 2026</time></dd>
+            </div>
+            <div>
+              <dt>Total paid</dt>
+              <dd>$199.00</dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+      <p class="help-contact">
+        Questions about a charge?
+        <a href="mailto:support@chartprime.com?subject=Billing%20question">support@chartprime.com</a>
+      </p>
+    </section>
+  </main>
+
+  <script>
+    for (const control of document.querySelectorAll('button[aria-controls][aria-expanded]')) {
+      const content = document.getElementById(control.getAttribute('aria-controls'));
+      const label = control.querySelector('.receipt-label');
+
+      control.addEventListener('click', () => {
+        const expanded = content.hidden;
+        content.hidden = !expanded;
+        control.setAttribute('aria-expanded', String(expanded));
+
+        if (label) {
+          label.textContent = expanded ? control.dataset.labelExpanded : control.dataset.labelCollapsed;
+        }
+      });
+    }
+  </script>
+</body>
+</html>

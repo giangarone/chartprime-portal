@@ -217,6 +217,7 @@
       color: var(--accent);
       font-size: 0.8125rem;
       font-weight: 600;
+      text-decoration: none;
     }
 
     .text-action:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -563,7 +564,7 @@
       <nav class="navigation" aria-label="Portal">
         <a class="nav-item" href="#top" aria-current="page">Overview</a>
         <a class="nav-item" href="plans-mockup.html">Plans</a>
-        <button class="nav-item" type="button">Billing</button>
+        <a class="nav-item" href="billing-mockup.html">Billing</a>
         <button class="nav-item" type="button">Account</button>
       </nav>
       <button class="account-button" type="button" aria-label="Gian’s account menu">
@@ -580,9 +581,9 @@
         <span class="account-status">All set</span>
         <div class="billing-detail">
           <span>Next charge <time datetime="2026-12-15">Dec 15, 2026</time> · $199</span>
-          <button class="text-action" type="button">
+          <a class="text-action" href="billing-mockup.html">
             Billing <span class="chevron" aria-hidden="true"></span>
-          </button>
+          </a>
         </div>
       </div>
     </header>

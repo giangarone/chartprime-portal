@@ -312,8 +312,9 @@
     .plan-price {
       display: flex;
       flex-wrap: wrap;
+      align-content: start;
       align-items: baseline;
-      gap: 6px;
+      gap: 4px 6px;
       margin-block: 8px 14px;
       line-height: 1.15;
     }
@@ -325,9 +326,15 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .price-period {
+    .price-period, .price-equivalent {
       color: var(--muted);
       font-size: 0.8125rem;
+    }
+
+    .price-equivalent {
+      flex-basis: 100%;
+      line-height: 1.4;
+      font-variant-numeric: tabular-nums;
     }
 
     .plan-button {
@@ -343,7 +350,10 @@
       font-size: 0.8125rem;
       font-weight: 600;
       text-align: center;
+      text-decoration: none;
     }
+
+    .plan-button[hidden] { display: none; }
 
     .plan-button:hover { background: var(--raised); }
 
@@ -434,6 +444,7 @@
     }
 
     .free-strip p { color: var(--muted); }
+    .free-strip-pricing { display: grid; text-align: end; }
     .free-strip-price { color: var(--muted); white-space: nowrap; }
     .free-strip-price strong { color: var(--text); font-weight: 650; }
 
@@ -565,6 +576,7 @@
       .product-tab { padding-inline: 8px; font-size: 0.8125rem; }
       .product-tab img, .credit-icon { width: 16px; height: 16px; }
       .panel-heading { margin-top: 18px; }
+      .free-strip-pricing { text-align: start; }
       .policy-grid { grid-template-columns: minmax(0, 1fr); gap: 11px; }
     }
 
@@ -585,7 +597,7 @@
   </style>
 </head>
 <body id="top">
-  <!-- Visual design reference. Product tabs switch views. Billing, plan, and purchase controls show the monthly preview. -->
+  <!-- Visual design reference. Product tabs and billing periods switch views. Plan and purchase actions are placeholders. -->
   <header class="site-header">
     <div class="page-width header-content">
       <a class="brand" href="overview-mockup.html">
@@ -594,7 +606,7 @@
       <nav class="navigation" aria-label="Portal">
         <a class="nav-item" href="overview-mockup.html">Overview</a>
         <a class="nav-item" href="#top" aria-current="page">Plans</a>
-        <button class="nav-item" type="button">Billing</button>
+        <a class="nav-item" href="billing-mockup.html">Billing</a>
         <button class="nav-item" type="button">Account</button>
       </nav>
       <button class="account-button" type="button" aria-label="Gian’s account menu">
@@ -632,11 +644,11 @@
       <header class="panel-heading">
         <div>
           <h2>Compare MarketStream plans</h2>
-          <p>Your Elite plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
+          <p>Your monthly Elite plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
         </div>
         <div class="billing-cycle" role="group" aria-label="Billing period">
-          <button class="billing-period" type="button" aria-pressed="true">Monthly</button>
-          <button class="billing-period" type="button" aria-pressed="false">
+          <button class="billing-period" type="button" value="monthly" aria-pressed="true">Monthly</button>
+          <button class="billing-period" type="button" value="yearly" aria-pressed="false">
             Yearly <span class="billing-savings">Save up to 50%</span>
           </button>
         </div>
@@ -647,7 +659,10 @@
             <div class="plan-title">
               <h3>Pro</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$67</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="489">
+              <span class="plan-amount">$67</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Pro">Switch plan</button>
           </header>
           <div class="plan-features">
@@ -667,7 +682,10 @@
             <div class="plan-title">
               <h3>Plus</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$117</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="708">
+              <span class="plan-amount">$117</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Plus">Switch plan</button>
           </header>
           <div class="plan-features">
@@ -687,7 +705,10 @@
             <div class="plan-title">
               <h3>Ultra</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$149</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="1428">
+              <span class="plan-amount">$149</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Ultra">Switch plan</button>
           </header>
           <div class="plan-features">
@@ -708,11 +729,15 @@
         <article class="plan-card is-current">
           <header class="plan-card-header">
             <div class="plan-title">
-              <h3>Elite</h3>
+              <h3 id="marketstream-elite">Elite</h3>
               <span class="current-tag">Your plan</span>
             </div>
-            <p class="plan-price"><span class="plan-amount">$199</span><span class="price-period">/ month</span></p>
-            <button class="plan-button" type="button" aria-label="Manage billing · MarketStream Elite">Manage billing</button>
+            <p class="plan-price" data-yearly-amount="2028">
+              <span class="plan-amount">$199</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
+            <a class="plan-button" href="billing-mockup.html" data-action-period="monthly" aria-describedby="marketstream-elite">Manage billing</a>
+            <button class="plan-button" type="button" data-action-period="yearly" aria-describedby="marketstream-elite" hidden>Switch to yearly</button>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -731,7 +756,10 @@
           <h3>MarketStream Free</h3>
           <p>Charts on every market. Included with every account.</p>
         </div>
-        <span class="free-strip-price"><strong>$0</strong> forever</span>
+        <div class="free-strip-pricing">
+          <span class="free-strip-price"><strong>$0</strong> forever</span>
+          <span class="price-equivalent">No card needed</span>
+        </div>
       </article>
     </section>
 
@@ -742,8 +770,8 @@
           <p>Ready-made trading bots.</p>
         </div>
         <div class="billing-cycle" role="group" aria-label="Billing period">
-          <button class="billing-period" type="button" aria-pressed="true">Monthly</button>
-          <button class="billing-period" type="button" aria-pressed="false">
+          <button class="billing-period" type="button" value="monthly" aria-pressed="true">Monthly</button>
+          <button class="billing-period" type="button" value="yearly" aria-pressed="false">
             Yearly <span class="billing-savings">Save up to 50%</span>
           </button>
         </div>
@@ -755,8 +783,11 @@
               <h3>Free</h3>
               <span class="current-tag">Your plan</span>
             </div>
-            <p class="plan-price"><span class="plan-amount">$0</span><span class="price-period">forever</span></p>
-            <p class="plan-button plan-button-status">No card needed</p>
+            <p class="plan-price">
+              <span class="plan-amount">$0</span><span class="price-period">forever</span>
+              <span class="price-equivalent">No card needed</span>
+            </p>
+            <p class="plan-button plan-button-status">Always included</p>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -770,7 +801,10 @@
             <div class="plan-title">
               <h3>Basic</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$87.59</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="529">
+              <span class="plan-amount">$87.59</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button plan-button-primary" type="button" aria-label="Upgrade · Prime Automation Basic">Upgrade</button>
           </header>
           <div class="plan-features">
@@ -786,7 +820,10 @@
             <div class="plan-title">
               <h3>Pro</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$119.99</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="719">
+              <span class="plan-amount">$119.99</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button" type="button" aria-label="Upgrade · Prime Automation Pro">Upgrade</button>
           </header>
           <div class="plan-features">
@@ -802,7 +839,10 @@
             <div class="plan-title">
               <h3>Builder</h3>
             </div>
-            <p class="plan-price"><span class="plan-amount">$199</span><span class="price-period">/ month</span></p>
+            <p class="plan-price" data-yearly-amount="1199">
+              <span class="plan-amount">$199</span><span class="price-period">/ month</span>
+              <span class="price-equivalent">Billed monthly, cancel anytime</span>
+            </p>
             <button class="plan-button" type="button" aria-label="Upgrade · Prime Automation Builder">Upgrade</button>
           </header>
           <div class="plan-features">
@@ -942,6 +982,53 @@
 
     window.addEventListener('hashchange', selectProductFromLocation);
     selectProductFromLocation();
+
+    const currency = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
+
+    for (const cycle of document.querySelectorAll('.billing-cycle')) {
+      const panel = cycle.closest('[role="tabpanel"]');
+      const options = cycle.querySelectorAll('.billing-period');
+      const prices = Array.from(panel.querySelectorAll('[data-yearly-amount]'), price => {
+        const amount = price.querySelector('.plan-amount');
+        const equivalent = price.querySelector('.price-equivalent');
+        return {
+          amount,
+          monthly: amount.textContent,
+          monthlyNote: equivalent.textContent,
+          yearly: Number(price.dataset.yearlyAmount),
+          period: price.querySelector('.price-period'),
+          equivalent,
+        };
+      });
+      const billingActions = panel.querySelectorAll('[data-action-period]');
+
+      for (const option of options) {
+        option.addEventListener('click', () => {
+          const yearly = option.value === 'yearly';
+
+          for (const button of options) {
+            button.setAttribute('aria-pressed', String(button === option));
+          }
+
+          for (const price of prices) {
+            price.amount.textContent = yearly ? currency.format(price.yearly) : price.monthly;
+            price.period.textContent = yearly ? '/ year' : '/ month';
+            price.equivalent.textContent = yearly
+              ? 'That’s ' + currency.format(price.yearly / 12) + ' a month'
+              : price.monthlyNote;
+          }
+
+          for (const action of billingActions) {
+            action.hidden = action.dataset.actionPeriod !== option.value;
+          }
+        });
+      }
+    }
   </script>
 </body>
 </html>
