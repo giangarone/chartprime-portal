@@ -198,6 +198,8 @@
       gap: 20px;
     }
 
+    .cancel-intro[hidden] + .cancel-grid { margin-top: 16px; }
+
     .panel {
       min-width: 0;
       padding: 20px;
@@ -374,8 +376,8 @@
       font-size: 0.8125rem;
     }
 
-    .preview-panel p { margin-top: 7px; color: var(--secondary); }
-    .preview-panel .control { margin-top: 16px; }
+    .confirmation-panel p { color: var(--secondary); }
+    .confirmation-panel .control { margin-top: 16px; }
 
     @media (max-width: 56rem) {
       .reason-options { grid-template-columns: minmax(0, 1fr); }
@@ -424,7 +426,7 @@
         <a class="nav-item" href="overview-mockup.html">Overview</a>
         <a class="nav-item" href="plans-mockup.html">Plans</a>
         <a class="nav-item" href="billing-mockup.html" aria-current="location">Billing</a>
-        <button class="nav-item" type="button">Account</button>
+        <a class="nav-item" href="account-mockup.html">Account</a>
       </nav>
       <button class="account-button" type="button" aria-label="Gian’s account menu">
         <span class="avatar" aria-hidden="true">GG</span>
@@ -437,7 +439,7 @@
     <a class="back-link" href="billing-mockup.html">
       <span class="chevron chevron-left" aria-hidden="true"></span> Back to Billing
     </a>
-    <header class="cancel-intro">
+    <header class="cancel-intro" id="cancel-intro">
       <h1>Cancel <span data-plan-name>MarketStream Elite</span>?</h1>
       <p>Canceling stops automatic renewal. You’ll keep access through <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
     </header>
@@ -480,9 +482,9 @@
             <a class="control" data-return-to-plan href="billing-mockup.html#marketstream-charge">Keep my plan</a>
           </div>
         </form>
-        <section class="panel preview-panel" id="cancel-preview" aria-labelledby="preview-heading" tabindex="-1" hidden>
-          <h2 class="section-title" id="preview-heading">Cancellation preview</h2>
-          <p><span data-plan-name>MarketStream Elite</span> would stay active through <time datetime="2026-12-15">Dec 15, 2026</time> and end without renewing.</p>
+        <section class="panel confirmation-panel" id="cancel-confirmation" aria-labelledby="confirmation-heading" tabindex="-1" hidden>
+          <h1 id="confirmation-heading">Plan canceled</h1>
+          <p>Automatic renewal is off. You’ll keep access to <span data-plan-name>MarketStream Elite</span> through <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
           <a class="control" data-return-to-plan href="billing-mockup.html#marketstream-charge">Back to Billing</a>
         </section>
       </div>
@@ -527,8 +529,9 @@
   </main>
 
   <script>
+    const intro = document.getElementById('cancel-intro');
     const feedback = document.getElementById('cancel-feedback');
-    const preview = document.getElementById('cancel-preview');
+    const confirmation = document.getElementById('cancel-confirmation');
     const logo = document.getElementById('plan-logo');
     const plans = {
       marketstream: { name: 'MarketStream Elite', price: '$199', logo: logo.src },
@@ -559,8 +562,9 @@
       document.title = 'Cancel ' + plan.name + ' | ChartPrime';
 
       feedback.reset();
+      intro.hidden = false;
       feedback.hidden = false;
-      preview.hidden = true;
+      confirmation.hidden = true;
     }
 
     window.addEventListener('hashchange', showPlan);
@@ -568,9 +572,10 @@
 
     feedback.addEventListener('submit', event => {
       event.preventDefault();
+      intro.hidden = true;
       feedback.hidden = true;
-      preview.hidden = false;
-      preview.focus();
+      confirmation.hidden = false;
+      confirmation.focus();
     });
   </script>
 </body>

@@ -47,6 +47,15 @@
         ],
         "createdAt": "2026-11-16T13:00:27.706Z",
         "reason": "Assistant: the cancellation flow uses the typography established in the existing portal mockups."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "account-mockup.html"
+        ],
+        "createdAt": "2026-11-16T13:06:29.204Z",
+        "reason": "Assistant: Account uses the Inter typography established in the existing portal mockups."
       }
     ]
   }
