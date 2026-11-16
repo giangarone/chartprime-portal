@@ -619,7 +619,7 @@
       <header class="panel-heading">
         <div>
           <h2>Compare MarketStream plans</h2>
-          <p>Your monthly Elite plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
+          <p>Your monthly Ultra plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
         </div>
         <div class="billing-cycle" role="group" aria-label="Billing period">
           <button class="billing-period" type="button" value="monthly" aria-pressed="true">Monthly</button>
@@ -696,16 +696,18 @@
           </div>
         </article>
 
-        <article class="plan-card">
+        <article class="plan-card is-current">
           <header class="plan-card-header">
             <div class="plan-title">
-              <h3>Ultra</h3>
+              <h3 id="marketstream-ultra">Ultra</h3>
+              <span class="current-tag">Your plan</span>
             </div>
             <p class="plan-price" data-yearly-amount="1428">
               <span class="plan-amount">$149</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-ultra" data-switch-plan aria-label="Switch plan · MarketStream Ultra">Switch plan</a>
+            <a class="plan-button" href="billing-mockup.html" data-action-period="monthly" aria-describedby="marketstream-ultra">Manage billing</a>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-ultra&amp;period=yearly" data-action-period="yearly" aria-describedby="marketstream-ultra" hidden>Switch to yearly</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -719,18 +721,16 @@
           </div>
         </article>
 
-        <article class="plan-card is-current">
+        <article class="plan-card">
           <header class="plan-card-header">
             <div class="plan-title">
-              <h3 id="marketstream-elite">Elite</h3>
-              <span class="current-tag">Your plan</span>
+              <h3>Elite</h3>
             </div>
             <p class="plan-price" data-yearly-amount="2028">
               <span class="plan-amount">$199</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <a class="plan-button" href="billing-mockup.html" data-action-period="monthly" aria-describedby="marketstream-elite">Manage billing</a>
-            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-elite&amp;period=yearly" data-action-period="yearly" aria-describedby="marketstream-elite" hidden>Switch to yearly</a>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-elite" data-switch-plan aria-label="Switch plan · MarketStream Elite">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
