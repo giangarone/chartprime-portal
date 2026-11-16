@@ -287,7 +287,6 @@
     .overview-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(320px, 350px);
-      align-items: start;
       gap: 28px;
     }
 
@@ -425,6 +424,9 @@
     .plan-button:hover { background: var(--raised); }
 
     .main-column, .side-column { display: grid; gap: 29px; }
+    .main-column { gap: 16px; grid-template-rows: 1fr auto; }
+    .main-column > section { display: flex; flex-direction: column; }
+    .main-column .product-grid { flex: 1 1 auto; grid-auto-rows: 1fr; }
 
     .credits-panel {
       padding: 17px 21px;
@@ -706,7 +708,8 @@
       main { padding-block: 33px 44px; }
       h1 { font-size: 1.875rem; }
       .welcome { margin-bottom: 29px; }
-      .overview-grid, .main-column, .side-column { gap: 25px; }
+      .overview-grid, .side-column { gap: 25px; }
+      .main-column { gap: 16px; }
       .product-grid, .side-column { grid-template-columns: minmax(0, 1fr); }
       .credits-options { grid-template-columns: minmax(0, 1fr); }
       .credits-row:first-child { padding: 0 0 12px; }
@@ -831,10 +834,7 @@
           </div>
         </section>
 
-        <section aria-labelledby="credits-heading">
-          <div class="section-heading">
-            <h2 id="credits-heading">AI credits</h2>
-          </div>
+        <section aria-label="AI credits">
           <div class="panel credits-panel">
             <div class="credits-usage">
               <div class="credits-usage-header">
