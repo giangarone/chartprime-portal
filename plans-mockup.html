@@ -357,17 +357,6 @@
 
     .plan-button:hover { background: var(--raised); }
 
-    .plan-button-primary {
-      border-color: var(--text);
-      background: var(--text);
-      color: var(--surface);
-    }
-
-    .plan-button-primary:hover {
-      border-color: #dcdcdc;
-      background: #dcdcdc;
-    }
-
     .plan-button-status {
       border-color: var(--border);
       color: var(--muted);
@@ -591,6 +580,7 @@
     }
 
     @media (max-width: 23rem) {
+      .product-tab { padding-inline: 2px; }
       .credit-panel { padding-inline: 10px; }
       .credit-table .plan-button { padding-inline: 8px; }
     }
@@ -767,7 +757,7 @@
       <header class="panel-heading">
         <div>
           <h2>Compare Prime Automation plans</h2>
-          <p>Ready-made trading bots.</p>
+          <p>Your monthly Basic plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
         </div>
         <div class="billing-cycle" role="group" aria-label="Billing period">
           <button class="billing-period" type="button" value="monthly" aria-pressed="true">Monthly</button>
@@ -777,11 +767,10 @@
         </div>
       </header>
       <div class="plan-grid">
-        <article class="plan-card is-current">
+        <article class="plan-card">
           <header class="plan-card-header">
             <div class="plan-title">
               <h3>Free</h3>
-              <span class="current-tag">Your plan</span>
             </div>
             <p class="plan-price">
               <span class="plan-amount">$0</span><span class="price-period">forever</span>
@@ -796,16 +785,18 @@
           </div>
         </article>
 
-        <article class="plan-card">
+        <article class="plan-card is-current">
           <header class="plan-card-header">
             <div class="plan-title">
-              <h3>Basic</h3>
+              <h3 id="automation-basic">Basic</h3>
+              <span class="current-tag">Your plan</span>
             </div>
             <p class="plan-price" data-yearly-amount="529">
               <span class="plan-amount">$87.59</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button plan-button-primary" type="button" aria-label="Upgrade · Prime Automation Basic">Upgrade</button>
+            <a class="plan-button" href="billing-mockup.html#prime-automation-charge" data-action-period="monthly" aria-describedby="automation-basic">Manage billing</a>
+            <button class="plan-button" type="button" data-action-period="yearly" aria-describedby="automation-basic" hidden>Switch to yearly</button>
           </header>
           <div class="plan-features">
             <ul class="feature-list">

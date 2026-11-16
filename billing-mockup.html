@@ -204,6 +204,22 @@
       padding: 20px;
     }
 
+    .charges-panel { padding-inline: 20px; }
+
+    .charge-row {
+      padding: 17px 0;
+      scroll-margin-top: 16px;
+    }
+
+    .charge-row + .charge-row { border-top: 1px solid var(--divider); }
+
+    .charge-row-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+    }
+
     .card-header {
       display: flex;
       align-items: center;
@@ -267,15 +283,6 @@
       white-space: nowrap;
     }
 
-    .charge-details {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-block: 18px 19px;
-      padding: 16px 0 0;
-      border-top: 1px solid var(--divider);
-    }
-
     dt {
       margin-bottom: 3px;
       color: var(--muted);
@@ -284,24 +291,23 @@
 
     dd { font-variant-numeric: tabular-nums; }
 
-    .charge-details dd {
-      display: flex;
-      align-items: center;
-      min-height: 2.3rem;
+    .charge-summary {
+      text-align: end;
+      font-variant-numeric: tabular-nums;
     }
 
     .charge-amount {
-      font-size: 2rem;
+      font-size: 1.375rem;
       font-weight: 650;
-      letter-spacing: -0.04em;
-      line-height: 1.15;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
     }
 
     .charge-date {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      white-space: nowrap;
     }
 
     .card-actions {
@@ -309,6 +315,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 9px 14px;
+      margin-top: 12px;
     }
 
     .control, .text-control {
@@ -463,9 +470,8 @@
       main { padding-block: 30px 42px; }
       h1 { margin-bottom: 24px; font-size: 1.875rem; }
       .billing-card { padding: 15px; }
-      .charge-details dd { min-height: 2.0125rem; }
-      .charge-amount { font-size: 1.75rem; }
-      .charge-date { font-size: 1.0625rem; }
+      .charges-panel { padding-inline: 15px; }
+      .charge-amount { font-size: 1.125rem; }
 
       .history-table thead {
         position: absolute;
@@ -497,6 +503,19 @@
 
       .receipt-details dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     }
+
+    @media (max-width: 23rem) {
+      .charge-row-header { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+
+      .charge-summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 10px;
+        padding-inline-start: 53px;
+        text-align: start;
+      }
+    }
   </style>
 </head>
 <body id="top">
@@ -525,37 +544,60 @@
     <div class="billing-grid">
       <section aria-labelledby="upcoming-heading">
         <header class="section-heading">
-          <h2 id="upcoming-heading">Next charge</h2>
+          <h2 id="upcoming-heading">Upcoming charges</h2>
         </header>
-        <article class="panel billing-card">
-          <header class="card-header">
-            <span class="icon-tile">
-              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDE5MjcgMTM2OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxuczphZmZpbml0eT0iaHR0cHM6Ly93d3cuYWZmaW5pdHkuc3R1ZGlvLyIgc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoyOyI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC0yMDc5NC44NzU4NjgsLTY2MzQ0LjY1NDYzMykiPgogICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDMuNjc3NTMsMCwwLDMuNjc3NTMsMTk3NzIuMDg4ODY1LDY1MDQzLjA3MTE0MikiPgogICAgICAgICAgICA8cGF0aCBkPSJNNDY0LjI2Niw2MTcuMTE2QzQ0Ny40ODEsNTc2LjgzIDQxOS42MzEsNTQxLjA1NyAzODMuODY2LDUxMi4wNkwzODMuODY2LDcyNi4wNzFMMzI2LjQxOCw3MjYuMDcxQzI5OS43NDIsNzI2LjA3MSAyNzguMTE4LDcwNC40NDcgMjc4LjExOCw2NzcuNzcyTDI3OC4xMTgsMzkzLjY4M0MyNzguMTE4LDM4MS43NjYgMjgzLjk3OCwzNzAuNjEyIDI5My43OTEsMzYzLjg1MkMzMDMuNjA0LDM1Ny4wOTEgMzE2LjEyNywzNTUuNTU2IDMyNy4yNDksMzU5LjgzNUMzNDYuOTM2LDM2Ny40MDkgMzY1Ljg0LDM3Ni4yMjMgMzgzLjg2NiwzODYuMDkyQzQzOC43Myw0MTYuMTMgNDg1LjI0Miw0NTYuNDg2IDUxOS45NCw1MDMuODMzQzUyNS4yNTcsNTExLjA4OCA1MzAuMjk3LDUxOC41MDggNTM1LjA0Nyw1MjYuMDhDNTY4LjgwNSw1NzkuODk1IDU4Ny45MjEsNjQxLjM5OCA1ODcuOTIxLDcwNi4yOTJDNTg3LjkyMSw3MTcuMjE2IDU3OS4wNjYsNzI2LjA3MSA1NjguMTQyLDcyNi4wNzFMNTAxLjk1Miw3MjYuMDcxQzQ5Ni43MDYsNzI2LjA3MSA0OTEuNjc1LDcyMy45ODggNDg3Ljk2Niw3MjAuMjc4QzQ4NC4yNTcsNzE2LjU2OSA0ODIuMTczLDcxMS41MzggNDgyLjE3Myw3MDYuMjkyQzQ4Mi4xNzMsNjc0LjkxMSA0NzUuODU4LDY0NC45MzggNDY0LjI2Niw2MTcuMTE2WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMSk7Ii8+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDUuNTU1NTk0LDAsMCw1LjU1NTU5NCwtMTA0OC4yMTU5MywtMzU0Ni43NzU3MzQpIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0zMTMuOTgxLDcyOS4xOThDMzAyLjA2Myw3MzguMDk1IDI5NC41MDMsNzUwLjk3OSAyOTQuNTAzLDc2NS41NDdDMjk0LjUwMyw3NjYuNzQgMjk0LjQ2Nyw3NjcuOTI3IDI5NC4zOTYsNzY5LjEwN0wyNzUuNTc1LDc2OS4xMDdDMjc1LjUwNCw3NjcuOTI3IDI3NS40NjgsNzY2Ljc0IDI3NS40NjgsNzY1LjU0N0MyNzUuNDY4LDc1My44NjYgMjc4LjkwOSw3NDIuNzk2IDI4NC45ODUsNzMzLjEwOUMyOTEuNzUyLDcyMi4zMjEgMzAxLjc4OCw3MTMuMjUgMzEzLjk4MSw3MDYuOTY0QzMxNy4yOCw3MDUuMjYzIDMyMC43MzYsNzAzLjc2NSAzMjQuMzI5LDcwMi40OTRDMzI2LjMxOSw3MDEuNzkgMzI4LjUyNiw3MDIuMDk3IDMzMC4yNDgsNzAzLjMxNUMzMzEuOTcxLDcwNC41MzQgMzMyLjk5NSw3MDYuNTEyIDMzMi45OTUsNzA4LjYyMkMzMzMuMDE1LDcxMy45MDMgMzMzLjAxNSw3MTkuNjMzIDMzMy4wMTUsNzE5LjYzM0MzMzMuMDEyLDcxOS42MzMgMzMzLjAwOSw3MTkuNjM0IDMzMy4wMDYsNzE5LjYzNUMzMzMuMDE1LDczMy4wODUgMzMzLjAxNSw3NTAuMjQzIDMzMy4wMTUsNzYwLjQxM0MzMzMuMDE1LDc2NS4yMTUgMzI5LjEyMyw3NjkuMTA3IDMyNC4zMjEsNzY5LjEwN0wzMTMuOTgxLDc2OS4xMDdMMzEzLjk4MSw3MjkuMTk4WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMik7Ii8+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS41MTA2ODYsMCwwLDEuNTEwNjg2LC04NDUxLjIyNzkyNCwtOTQwMDcuOTI4NzEyKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTkwMS42MTksNjI2MzcuMTM0QzU5MDcuNTc4LDYyNjE1LjkwNyA1OTE2LjY3NCw2MjU5NS42ODEgNTkyOC40NzMsNjI1NzYuODczQzU5MzEuNjE3LDYyNTcxLjg2IDU5MzQuOTUzLDYyNTY2Ljk0OSA1OTM4LjQ3Myw2MjU2Mi4xNDZDNTk0MS45OTMsNjI1NjYuOTQ5IDU5NDUuMzI5LDYyNTcxLjg2IDU5NDguNDczLDYyNTc2Ljg3M0M1OTI2LjEyNiw2MjYxMi40OTYgNTkxMy40NzMsNjI2NTMuMjA4IDU5MTMuNDczLDYyNjk2LjE2NEM1OTEzLjQ3Myw2MjY3NS4zOTIgNTkwOS4yOTMsNjI2NTUuNTUxIDU5MDEuNjE5LDYyNjM3LjEzNFoiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4xOyIvPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJfTGluZWFyMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDI1Ni45MjkxMDMsMCwwLDI1Ni45MjkxMDMsMjc4LjExNzg4Nyw0ODEuNDYxNjk1KSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMjU0LDIwOCw1KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIxMCw3NCwxMzkpO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il9MaW5lYXIyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoLTQxLjQzMjY1MiwwLC0wLC00MS40MzI2NTIsMzMzLjAxNTM0NSw3MjQuMjgyMjMxKSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTI3LDUsMjU0KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIzNSwxMDUsMTQ3KTtzdG9wLW9wYWNpdHk6MSIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+Cjwvc3ZnPgo=" alt="" width="24" height="24">
-            </span>
-            <div class="card-heading">
-              <h3>MarketStream Elite</h3>
-              <p>Monthly subscription</p>
+        <div class="panel charges-panel">
+          <article class="charge-row" id="marketstream-charge" aria-labelledby="marketstream-charge-heading">
+            <header class="charge-row-header">
+              <div class="card-header">
+                <span class="icon-tile">
+                  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDE5MjcgMTM2OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxuczphZmZpbml0eT0iaHR0cHM6Ly93d3cuYWZmaW5pdHkuc3R1ZGlvLyIgc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoyOyI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC0yMDc5NC44NzU4NjgsLTY2MzQ0LjY1NDYzMykiPgogICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDMuNjc3NTMsMCwwLDMuNjc3NTMsMTk3NzIuMDg4ODY1LDY1MDQzLjA3MTE0MikiPgogICAgICAgICAgICA8cGF0aCBkPSJNNDY0LjI2Niw2MTcuMTE2QzQ0Ny40ODEsNTc2LjgzIDQxOS42MzEsNTQxLjA1NyAzODMuODY2LDUxMi4wNkwzODMuODY2LDcyNi4wNzFMMzI2LjQxOCw3MjYuMDcxQzI5OS43NDIsNzI2LjA3MSAyNzguMTE4LDcwNC40NDcgMjc4LjExOCw2NzcuNzcyTDI3OC4xMTgsMzkzLjY4M0MyNzguMTE4LDM4MS43NjYgMjgzLjk3OCwzNzAuNjEyIDI5My43OTEsMzYzLjg1MkMzMDMuNjA0LDM1Ny4wOTEgMzE2LjEyNywzNTUuNTU2IDMyNy4yNDksMzU5LjgzNUMzNDYuOTM2LDM2Ny40MDkgMzY1Ljg0LDM3Ni4yMjMgMzgzLjg2NiwzODYuMDkyQzQzOC43Myw0MTYuMTMgNDg1LjI0Miw0NTYuNDg2IDUxOS45NCw1MDMuODMzQzUyNS4yNTcsNTExLjA4OCA1MzAuMjk3LDUxOC41MDggNTM1LjA0Nyw1MjYuMDhDNTY4LjgwNSw1NzkuODk1IDU4Ny45MjEsNjQxLjM5OCA1ODcuOTIxLDcwNi4yOTJDNTg3LjkyMSw3MTcuMjE2IDU3OS4wNjYsNzI2LjA3MSA1NjguMTQyLDcyNi4wNzFMNTAxLjk1Miw3MjYuMDcxQzQ5Ni43MDYsNzI2LjA3MSA0OTEuNjc1LDcyMy45ODggNDg3Ljk2Niw3MjAuMjc4QzQ4NC4yNTcsNzE2LjU2OSA0ODIuMTczLDcxMS41MzggNDgyLjE3Myw3MDYuMjkyQzQ4Mi4xNzMsNjc0LjkxMSA0NzUuODU4LDY0NC45MzggNDY0LjI2Niw2MTcuMTE2WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMSk7Ii8+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDUuNTU1NTk0LDAsMCw1LjU1NTU5NCwtMTA0OC4yMTU5MywtMzU0Ni43NzU3MzQpIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0zMTMuOTgxLDcyOS4xOThDMzAyLjA2Myw3MzguMDk1IDI5NC41MDMsNzUwLjk3OSAyOTQuNTAzLDc2NS41NDdDMjk0LjUwMyw3NjYuNzQgMjk0LjQ2Nyw3NjcuOTI3IDI5NC4zOTYsNzY5LjEwN0wyNzUuNTc1LDc2OS4xMDdDMjc1LjUwNCw3NjcuOTI3IDI3NS40NjgsNzY2Ljc0IDI3NS40NjgsNzY1LjU0N0MyNzUuNDY4LDc1My44NjYgMjc4LjkwOSw3NDIuNzk2IDI4NC45ODUsNzMzLjEwOUMyOTEuNzUyLDcyMi4zMjEgMzAxLjc4OCw3MTMuMjUgMzEzLjk4MSw3MDYuOTY0QzMxNy4yOCw3MDUuMjYzIDMyMC43MzYsNzAzLjc2NSAzMjQuMzI5LDcwMi40OTRDMzI2LjMxOSw3MDEuNzkgMzI4LjUyNiw3MDIuMDk3IDMzMC4yNDgsNzAzLjMxNUMzMzEuOTcxLDcwNC41MzQgMzMyLjk5NSw3MDYuNTEyIDMzMi45OTUsNzA4LjYyMkMzMzMuMDE1LDcxMy45MDMgMzMzLjAxNSw3MTkuNjMzIDMzMy4wMTUsNzE5LjYzM0MzMzMuMDEyLDcxOS42MzMgMzMzLjAwOSw3MTkuNjM0IDMzMy4wMDYsNzE5LjYzNUMzMzMuMDE1LDczMy4wODUgMzMzLjAxNSw3NTAuMjQzIDMzMy4wMTUsNzYwLjQxM0MzMzMuMDE1LDc2NS4yMTUgMzI5LjEyMyw3NjkuMTA3IDMyNC4zMjEsNzY5LjEwN0wzMTMuOTgxLDc2OS4xMDdMMzEzLjk4MSw3MjkuMTk4WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMik7Ii8+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS41MTA2ODYsMCwwLDEuNTEwNjg2LC04NDUxLjIyNzkyNCwtOTQwMDcuOTI4NzEyKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTkwMS42MTksNjI2MzcuMTM0QzU5MDcuNTc4LDYyNjE1LjkwNyA1OTE2LjY3NCw2MjU5NS42ODEgNTkyOC40NzMsNjI1NzYuODczQzU5MzEuNjE3LDYyNTcxLjg2IDU5MzQuOTUzLDYyNTY2Ljk0OSA1OTM4LjQ3Myw2MjU2Mi4xNDZDNTk0MS45OTMsNjI1NjYuOTQ5IDU5NDUuMzI5LDYyNTcxLjg2IDU5NDguNDczLDYyNTc2Ljg3M0M1OTI2LjEyNiw2MjYxMi40OTYgNTkxMy40NzMsNjI2NTMuMjA4IDU5MTMuNDczLDYyNjk2LjE2NEM1OTEzLjQ3Myw2MjY3NS4zOTIgNTkwOS4yOTMsNjI2NTUuNTUxIDU5MDEuNjE5LDYyNjM3LjEzNFoiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4xOyIvPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJfTGluZWFyMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDI1Ni45MjkxMDMsMCwwLDI1Ni45MjkxMDMsMjc4LjExNzg4Nyw0ODEuNDYxNjk1KSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMjU0LDIwOCw1KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIxMCw3NCwxMzkpO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il9MaW5lYXIyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoLTQxLjQzMjY1MiwwLC0wLC00MS40MzI2NTIsMzMzLjAxNTM0NSw3MjQuMjgyMjMxKSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTI3LDUsMjU0KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIzNSwxMDUsMTQ3KTtzdG9wLW9wYWNpdHk6MSIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+Cjwvc3ZnPgo=" alt="" width="24" height="24">
+                </span>
+                <div class="card-heading">
+                  <h3 id="marketstream-charge-heading">MarketStream Elite</h3>
+                  <p>Monthly subscription</p>
+                </div>
+              </div>
+              <div class="charge-summary">
+                <p class="charge-amount">$199.00</p>
+                <p class="charge-date"><time datetime="2026-12-15">Dec 15, 2026</time></p>
+              </div>
+            </header>
+            <div class="card-actions">
+              <a class="control" href="plans-mockup.html#marketstream" aria-describedby="marketstream-charge-heading">Change plan</a>
+              <button class="text-control cancel-control" type="button" aria-expanded="false"
+                aria-controls="marketstream-cancellation" aria-describedby="marketstream-charge-heading">
+                Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
+              </button>
             </div>
-            <span class="status-tag">Active</span>
-          </header>
-          <dl class="charge-details">
-            <div>
-              <dt>Amount</dt>
-              <dd class="charge-amount">$199.00</dd>
+            <p class="cancel-note" id="marketstream-cancellation" hidden>If you cancel, you keep access through the end of your billing period.</p>
+          </article>
+          <article class="charge-row" id="prime-automation-charge" aria-labelledby="prime-automation-charge-heading">
+            <header class="charge-row-header">
+              <div class="card-header">
+                <span class="icon-tile">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjgiIHZpZXdCb3g9IjAgMCAzMCAyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI4Ljk3NiAyNC4yMTc5QzI3LjU3NiAyNi42Mzg1IDI1LjAyOTggMjcuOTk0OSAyMi40MTcgMjcuOTk0OUMyMi4yMTcgMjcuOTk0OSAyMi4wMjIxIDI3Ljk4NzIgMjEuODIyMSAyNy45NzE4QzIwLjczNDkgMjcuODg0NiAxOS42NTAzIDI3LjU2NDEgMTguNjUwMyAyNi45ODQ2SDE4LjY0NzdMMTYuODExOCAyNS45MjA1TDIwLjA3ODUgMjQuMDMzM0wyMC4yODM2IDI0LjE1MTNDMjAuOTk2NSAyNC41NjQxIDIxLjc4MzcgMjQuNzQ2MiAyMi41NTI5IDI0LjcyMDVDMjMuOTkxNCAyNC42Nzk1IDI1LjM3NiAyMy45MTI4IDI2LjE0NTIgMjIuNTgyMUMyNi45MTQ1IDIxLjI0ODcgMjYuODgzNyAxOS42NjQxIDI2LjIwMTYgMTguNEMyNS44NDAxIDE3LjcyMDUgMjUuMjg4OCAxNy4xMzA4IDI0LjU3MzQgMTYuNzE3OUwyMy41Nzg1IDE2LjE0MzZMMjIuNTUyOSAxNS41NDg3TDE5LjI4NjIgMTMuNjY0MUwxNC45OTY0IDExLjE4NzJMMTIuNDg2MSA5Ljc0MTAzVjcuNTU2NDFDMTIuNDg2MSA3LjA4OTc0IDEyLjYxNDMgNi42Mzg0NiAxMi44NTc5IDYuMjQ2MTVDMTIuODcwOCA2LjIyODIxIDEyLjg3ODUgNi4yMTAyNiAxMi44OTEzIDYuMTk0ODdMMTQuOTk2NCA3LjQxMjgyTDE3LjUwNDEgOC44NTg5N0wxOC4yNjU3IDkuMjk3NDRMMTguMzk2NCA5LjM3MThMMTkuMjg4OCA5Ljg4OTc0TDIyLjU1NTUgMTEuNzc2OUwyMy40NDc4IDEyLjI4OTdMMjQuMzQwMSAxMi44MDc3TDI2LjIwOTMgMTMuODg3MkgyNi4yMTE5QzI3LjIxOTYgMTQuNDY2NyAyOC4wNDAxIDE1LjI0MzYgMjguNjU4MSAxNi4xNDYyQzMwLjI1NTUgMTguNDcxOCAzMC40ODYzIDIxLjYxMDMgMjguOTgxMSAyNC4yMTU0TDI4Ljk3NiAyNC4yMTc5Wk0yNC42MjczIDE5LjIzODVDMjQuNDE0NCAxOC44MzA4IDI0LjA4NjIgMTguNDk0OSAyMy42ODM3IDE4LjI2NDFMMjIuNjg2MiAxNy42ODcyTDIxLjc5OSAxNy4xNzQ0TDE5LjI4ODggMTguNjIwNUwxNC45OTkgMjEuMDk3NEwxMS43MjcyIDIyLjk4NDZMMTAuNzA0MSAyMy41NzY5TDkuNzA2NjMgMjQuMTUzOEM5LjYyNDU4IDI0LjIwMjYgOS41Mzk5NiAyNC4yNDYyIDkuNDU1MzUgMjQuMjg3MkM5LjI4NjEyIDI0LjM3NDQgOS4xMTQzMiAyNC40NDM2IDguOTM0ODMgMjQuNTA1MUM4Ljg1NTM0IDI0LjUzMDggOC43NzA3MyAyNC41NTkgOC42OTEyNCAyNC41Nzk1QzguNjgzNTUgMjQuNTgyMSA4LjY3NTg1IDI0LjU4NDYgOC42NjgxNiAyNC41ODcyQzguNTg4NjcgMjQuNjA3NyA4LjUwNjYyIDI0LjYyNTYgOC40MjcxMyAyNC42NDM2QzguNDE0MzEgMjQuNjQ2MiA4LjQwNjYyIDI0LjY0ODcgOC4zOTYzNiAyNC42NDg3QzguMDgwOTggMjQuNzEwMyA3Ljc2MDQ2IDI0LjczODUgNy40MzczOCAyNC43MjgyQzcuMTA2NjEgMjQuNzIwNSA2Ljc3ODQgMjQuNjY5MiA2LjQ1MDIgMjQuNTgyMUM1LjM0MjQ5IDI0LjI4NDYgNC40MTk0MSAyMy41NzQ0IDMuODQ1MDUgMjIuNTgyMUMzLjA3NTgxIDIxLjI0ODcgMy4xMDY1OCAxOS42NjQxIDMuNzg4NjQgMTguNEM0LjE1MDE4IDE3LjcyMDUgNC43MDE0NiAxNy4xMzA4IDUuNDE2ODUgMTYuNzE3OUw1LjYyMTk4IDE2LjZWMTIuODMwOEwzLjc4MzUxIDEzLjg5MjNDMi43OTM3NiAxNC40NjE1IDEuOTY1NTQgMTUuMjMzMyAxLjMzNDc3IDE2LjE0MzZDMC44NTAxNDkgMTYuODQzNiAwLjQ4NjA0NCAxNy42MzA4IDAuMjYwNDAxIDE4LjQ4MjFDLTAuMjYyNjggMjAuNDMwOCAwLjAwOTExNjkgMjIuNDY5MiAxLjAxNDI1IDI0LjIxNzlDMi4wMjQ1MiAyNS45NjQxIDMuNjU1MyAyNy4yMTU0IDUuNjA0MDMgMjcuNzM4NUM2LjI1Nzg5IDI3LjkxMjggNi45MTY4NyAyOCA3LjU3MzI4IDI4QzcuNzczMjggMjggNy45NjgxNiAyNy45OTIzIDguMTY4MTYgMjcuOTc2OUM5LjI3MzMgMjcuODg3MiAxMC4zNTI4IDI3LjU1MzggMTEuMzQgMjYuOTg0NkgxMS4zNDUxTDEzLjIxNDQgMjUuOTAyNkwxNC4xMDY3IDI1LjM4NDZMMTQuOTk5IDI0Ljg3MThMMTguMjY1NyAyMi45ODQ2TDE5LjE1MjkgMjIuNDcxOEwxOS4yODYyIDIyLjM5NDlMMjAuMDQ3NyAyMS45NTY0TDIyLjU1NTUgMjAuNTEwM0wyNC42NTggMTkuMjk0OUMyNC42NDUyIDE5LjI3NjkgMjQuNjM3NSAxOS4yNTkgMjQuNjI3MyAxOS4yNDFWMTkuMjM4NVpNOC4zOTM4IDI0LjY0ODdDOC4zMzIyNiAyNC42NTY0IDguMjcwNzIgMjQuNjY5MiA4LjIwOTE4IDI0LjY3OTVDOC4yNzA3MiAyNC42NzE4IDguMzMyMjYgMjQuNjYxNSA4LjM5MzggMjQuNjQ4N1pNOC40MjQ1NyAyNC42NDM2QzguNTA0MDYgMjQuNjI1NiA4LjU4NjExIDI0LjYwNzcgOC42NjU2IDI0LjU4NzJDOC41NzU4NSAyNC42MDc3IDguNDgzNTQgMjQuNjI4MiA4LjM5NjM2IDI0LjY0NjJDOC40MDQwNiAyNC42NDYyIDguNDE2ODggMjQuNjQzNiA4LjQyNzEzIDI0LjY0MzZIOC40MjQ1N1pNOS40NTI3OCAyNC4yODcyQzkuMjgzNTUgMjQuMzY5MiA5LjExMTc1IDI0LjQ0MSA4LjkzMjI3IDI0LjUwNTFDOS4xMTE3NSAyNC40NDYyIDkuMjgzNTUgMjQuMzc0NCA5LjQ1Mjc4IDI0LjI4NzJaTTIxLjgyMjEgNC4zMjA1MUMyMC42MDY3IDEuNzY2NjcgMTguMDA0MSAwIDE0Ljk5MzkgMEMxMS45ODM2IDAgOS4zODA5OSAxLjc2NjY3IDguMTYzMDMgNC4zMTUzOEM3LjY5MzggNS4zIDcuNDMyMjUgNi40IDcuNDMyMjUgNy41NTg5N1YyMi45NDFDNy40NTAyIDIyLjk0MzYgNy40NjgxNSAyMi45NDM2IDcuNDg2MSAyMi45NDM2SDcuNTYwNDZDNy45OTg5MyAyMi45NDM2IDguNDE5NDQgMjIuODMwOCA4LjgxMTc1IDIyLjYwNTFMOS44MDY2MyAyMi4wMjgyTDEwLjcwMTUgMjEuNTEwM1Y3LjU2MTU0QzEwLjcwMTUgNi43MzU5IDEwLjkzNzQgNS45NjQxIDExLjM0MjUgNS4zMTAyNkMxMi4wOTY0IDQuMDg3MTggMTMuNDUyOCAzLjI2OTIzIDE0Ljk5MzkgMy4yNjkyM0MxNi41MzQ5IDMuMjY5MjMgMTcuODg2MiA0LjA4NzE4IDE4LjY0NTIgNS4zMTAyNkMxOS4wNTAzIDUuOTY0MSAxOS4yODM2IDYuNzM1OSAxOS4yODM2IDcuNTYxNTRWNy44TDIyLjU1MDMgOS42ODcxOFY3LjU2NDFDMjIuNTUwMyA2LjQwNTEzIDIyLjI4ODggNS4zMDUxMyAyMS44MTk2IDQuMzIzMDhMMjEuODIyMSA0LjMyMDUxWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzExNTIxXzM1OTMpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMTE1MjFfMzU5MyIgeDE9Ii0xLjc1MzQxZS0wNyIgeTE9IjEzLjE2NTMiIHgyPSIyOS45OTIzIiB5Mj0iMTMuMTY1MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjU1N0ZGIi8+CjxzdG9wIG9mZnNldD0iMC4zMyIgc3RvcC1jb2xvcj0iI0FBM0ZGRiIvPgo8c3RvcCBvZmZzZXQ9IjAuNjYiIHN0b3AtY29sb3I9IiNGQ0FBNEEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjg1MjJFIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" alt="" width="24" height="24">
+                </span>
+                <div class="card-heading">
+                  <h3 id="prime-automation-charge-heading">Prime Automation Basic</h3>
+                  <p>Monthly subscription</p>
+                </div>
+              </div>
+              <div class="charge-summary">
+                <p class="charge-amount">$87.59</p>
+                <p class="charge-date"><time datetime="2026-12-15">Dec 15, 2026</time></p>
+              </div>
+            </header>
+            <div class="card-actions">
+              <a class="control" href="plans-mockup.html#prime-automation" aria-describedby="prime-automation-charge-heading">Change plan</a>
+              <button class="text-control cancel-control" type="button" aria-expanded="false"
+                aria-controls="prime-automation-cancellation" aria-describedby="prime-automation-charge-heading">
+                Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
+              </button>
             </div>
-            <div>
-              <dt>Scheduled for</dt>
-              <dd class="charge-date"><time datetime="2026-12-15">Dec 15, 2026</time></dd>
-            </div>
-          </dl>
-          <div class="card-actions">
-            <a class="control" href="plans-mockup.html#marketstream">Change plan</a>
-            <button class="text-control cancel-control" type="button" aria-expanded="false" aria-controls="cancellation-details">
-              Cancel plan <span class="chevron chevron-down" aria-hidden="true"></span>
-            </button>
-          </div>
-          <p class="cancel-note" id="cancellation-details" hidden>If you cancel, you keep access through the end of your billing period.</p>
-        </article>
+            <p class="cancel-note" id="prime-automation-cancellation" hidden>If you cancel, you keep access through the end of your billing period.</p>
+          </article>
+        </div>
       </section>
 
       <section aria-labelledby="payment-heading">
@@ -572,7 +614,7 @@
           </header>
           <div class="payment-guidance">
             <h4>Update your card</h4>
-            <p>Use the card update link in a payment email from Commas, our payment partner.</p>
+            <p>To update the card for MarketStream, use the link in a payment email from Commas.</p>
             <a class="text-control" href="mailto:support@chartprime.com?subject=Update%20payment%20method">
               Contact support <span class="chevron" aria-hidden="true"></span>
             </a>

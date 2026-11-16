@@ -344,6 +344,9 @@
     }
 
     .plan-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       align-self: flex-start;
       min-width: 116px;
       min-height: 40px;
@@ -354,20 +357,10 @@
       background: transparent;
       font-size: 0.8125rem;
       font-weight: 620;
+      text-decoration: none;
     }
 
     .plan-button:hover { background: var(--raised); }
-
-    .plan-button-primary {
-      border-color: var(--text);
-      background: var(--text);
-      color: #151515;
-    }
-
-    .plan-button-primary:hover {
-      border-color: #dcdcdc;
-      background: #dcdcdc;
-    }
 
     .side-column { display: grid; gap: 29px; }
 
@@ -580,7 +573,7 @@
       <div class="billing-summary">
         <span class="account-status">All set</span>
         <div class="billing-detail">
-          <span>Next charge <time datetime="2026-12-15">Dec 15, 2026</time> · $199</span>
+          <span>Next charges <time datetime="2026-12-15">Dec 15, 2026</time> · $286.59 total</span>
           <a class="text-action" href="billing-mockup.html">
             Billing <span class="chevron" aria-hidden="true"></span>
           </a>
@@ -613,7 +606,7 @@
                 <dd><time datetime="2026-12-15">Dec 15, 2026</time></dd>
               </div>
             </dl>
-            <button class="plan-button" type="button">Change plan</button>
+            <a class="plan-button" href="plans-mockup.html#marketstream" aria-label="Change MarketStream plan">Change plan</a>
           </article>
 
           <article class="panel product-card">
@@ -623,19 +616,19 @@
                 <img class="product-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjgiIHZpZXdCb3g9IjAgMCAzMCAyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI4Ljk3NiAyNC4yMTc5QzI3LjU3NiAyNi42Mzg1IDI1LjAyOTggMjcuOTk0OSAyMi40MTcgMjcuOTk0OUMyMi4yMTcgMjcuOTk0OSAyMi4wMjIxIDI3Ljk4NzIgMjEuODIyMSAyNy45NzE4QzIwLjczNDkgMjcuODg0NiAxOS42NTAzIDI3LjU2NDEgMTguNjUwMyAyNi45ODQ2SDE4LjY0NzdMMTYuODExOCAyNS45MjA1TDIwLjA3ODUgMjQuMDMzM0wyMC4yODM2IDI0LjE1MTNDMjAuOTk2NSAyNC41NjQxIDIxLjc4MzcgMjQuNzQ2MiAyMi41NTI5IDI0LjcyMDVDMjMuOTkxNCAyNC42Nzk1IDI1LjM3NiAyMy45MTI4IDI2LjE0NTIgMjIuNTgyMUMyNi45MTQ1IDIxLjI0ODcgMjYuODgzNyAxOS42NjQxIDI2LjIwMTYgMTguNEMyNS44NDAxIDE3LjcyMDUgMjUuMjg4OCAxNy4xMzA4IDI0LjU3MzQgMTYuNzE3OUwyMy41Nzg1IDE2LjE0MzZMMjIuNTUyOSAxNS41NDg3TDE5LjI4NjIgMTMuNjY0MUwxNC45OTY0IDExLjE4NzJMMTIuNDg2MSA5Ljc0MTAzVjcuNTU2NDFDMTIuNDg2MSA3LjA4OTc0IDEyLjYxNDMgNi42Mzg0NiAxMi44NTc5IDYuMjQ2MTVDMTIuODcwOCA2LjIyODIxIDEyLjg3ODUgNi4yMTAyNiAxMi44OTEzIDYuMTk0ODdMMTQuOTk2NCA3LjQxMjgyTDE3LjUwNDEgOC44NTg5N0wxOC4yNjU3IDkuMjk3NDRMMTguMzk2NCA5LjM3MThMMTkuMjg4OCA5Ljg4OTc0TDIyLjU1NTUgMTEuNzc2OUwyMy40NDc4IDEyLjI4OTdMMjQuMzQwMSAxMi44MDc3TDI2LjIwOTMgMTMuODg3MkgyNi4yMTE5QzI3LjIxOTYgMTQuNDY2NyAyOC4wNDAxIDE1LjI0MzYgMjguNjU4MSAxNi4xNDYyQzMwLjI1NTUgMTguNDcxOCAzMC40ODYzIDIxLjYxMDMgMjguOTgxMSAyNC4yMTU0TDI4Ljk3NiAyNC4yMTc5Wk0yNC42MjczIDE5LjIzODVDMjQuNDE0NCAxOC44MzA4IDI0LjA4NjIgMTguNDk0OSAyMy42ODM3IDE4LjI2NDFMMjIuNjg2MiAxNy42ODcyTDIxLjc5OSAxNy4xNzQ0TDE5LjI4ODggMTguNjIwNUwxNC45OTkgMjEuMDk3NEwxMS43MjcyIDIyLjk4NDZMMTAuNzA0MSAyMy41NzY5TDkuNzA2NjMgMjQuMTUzOEM5LjYyNDU4IDI0LjIwMjYgOS41Mzk5NiAyNC4yNDYyIDkuNDU1MzUgMjQuMjg3MkM5LjI4NjEyIDI0LjM3NDQgOS4xMTQzMiAyNC40NDM2IDguOTM0ODMgMjQuNTA1MUM4Ljg1NTM0IDI0LjUzMDggOC43NzA3MyAyNC41NTkgOC42OTEyNCAyNC41Nzk1QzguNjgzNTUgMjQuNTgyMSA4LjY3NTg1IDI0LjU4NDYgOC42NjgxNiAyNC41ODcyQzguNTg4NjcgMjQuNjA3NyA4LjUwNjYyIDI0LjYyNTYgOC40MjcxMyAyNC42NDM2QzguNDE0MzEgMjQuNjQ2MiA4LjQwNjYyIDI0LjY0ODcgOC4zOTYzNiAyNC42NDg3QzguMDgwOTggMjQuNzEwMyA3Ljc2MDQ2IDI0LjczODUgNy40MzczOCAyNC43MjgyQzcuMTA2NjEgMjQuNzIwNSA2Ljc3ODQgMjQuNjY5MiA2LjQ1MDIgMjQuNTgyMUM1LjM0MjQ5IDI0LjI4NDYgNC40MTk0MSAyMy41NzQ0IDMuODQ1MDUgMjIuNTgyMUMzLjA3NTgxIDIxLjI0ODcgMy4xMDY1OCAxOS42NjQxIDMuNzg4NjQgMTguNEM0LjE1MDE4IDE3LjcyMDUgNC43MDE0NiAxNy4xMzA4IDUuNDE2ODUgMTYuNzE3OUw1LjYyMTk4IDE2LjZWMTIuODMwOEwzLjc4MzUxIDEzLjg5MjNDMi43OTM3NiAxNC40NjE1IDEuOTY1NTQgMTUuMjMzMyAxLjMzNDc3IDE2LjE0MzZDMC44NTAxNDkgMTYuODQzNiAwLjQ4NjA0NCAxNy42MzA4IDAuMjYwNDAxIDE4LjQ4MjFDLTAuMjYyNjggMjAuNDMwOCAwLjAwOTExNjkgMjIuNDY5MiAxLjAxNDI1IDI0LjIxNzlDMi4wMjQ1MiAyNS45NjQxIDMuNjU1MyAyNy4yMTU0IDUuNjA0MDMgMjcuNzM4NUM2LjI1Nzg5IDI3LjkxMjggNi45MTY4NyAyOCA3LjU3MzI4IDI4QzcuNzczMjggMjggNy45NjgxNiAyNy45OTIzIDguMTY4MTYgMjcuOTc2OUM5LjI3MzMgMjcuODg3MiAxMC4zNTI4IDI3LjU1MzggMTEuMzQgMjYuOTg0NkgxMS4zNDUxTDEzLjIxNDQgMjUuOTAyNkwxNC4xMDY3IDI1LjM4NDZMMTQuOTk5IDI0Ljg3MThMMTguMjY1NyAyMi45ODQ2TDE5LjE1MjkgMjIuNDcxOEwxOS4yODYyIDIyLjM5NDlMMjAuMDQ3NyAyMS45NTY0TDIyLjU1NTUgMjAuNTEwM0wyNC42NTggMTkuMjk0OUMyNC42NDUyIDE5LjI3NjkgMjQuNjM3NSAxOS4yNTkgMjQuNjI3MyAxOS4yNDFWMTkuMjM4NVpNOC4zOTM4IDI0LjY0ODdDOC4zMzIyNiAyNC42NTY0IDguMjcwNzIgMjQuNjY5MiA4LjIwOTE4IDI0LjY3OTVDOC4yNzA3MiAyNC42NzE4IDguMzMyMjYgMjQuNjYxNSA4LjM5MzggMjQuNjQ4N1pNOC40MjQ1NyAyNC42NDM2QzguNTA0MDYgMjQuNjI1NiA4LjU4NjExIDI0LjYwNzcgOC42NjU2IDI0LjU4NzJDOC41NzU4NSAyNC42MDc3IDguNDgzNTQgMjQuNjI4MiA4LjM5NjM2IDI0LjY0NjJDOC40MDQwNiAyNC42NDYyIDguNDE2ODggMjQuNjQzNiA4LjQyNzEzIDI0LjY0MzZIOC40MjQ1N1pNOS40NTI3OCAyNC4yODcyQzkuMjgzNTUgMjQuMzY5MiA5LjExMTc1IDI0LjQ0MSA4LjkzMjI3IDI0LjUwNTFDOS4xMTE3NSAyNC40NDYyIDkuMjgzNTUgMjQuMzc0NCA5LjQ1Mjc4IDI0LjI4NzJaTTIxLjgyMjEgNC4zMjA1MUMyMC42MDY3IDEuNzY2NjcgMTguMDA0MSAwIDE0Ljk5MzkgMEMxMS45ODM2IDAgOS4zODA5OSAxLjc2NjY3IDguMTYzMDMgNC4zMTUzOEM3LjY5MzggNS4zIDcuNDMyMjUgNi40IDcuNDMyMjUgNy41NTg5N1YyMi45NDFDNy40NTAyIDIyLjk0MzYgNy40NjgxNSAyMi45NDM2IDcuNDg2MSAyMi45NDM2SDcuNTYwNDZDNy45OTg5MyAyMi45NDM2IDguNDE5NDQgMjIuODMwOCA4LjgxMTc1IDIyLjYwNTFMOS44MDY2MyAyMi4wMjgyTDEwLjcwMTUgMjEuNTEwM1Y3LjU2MTU0QzEwLjcwMTUgNi43MzU5IDEwLjkzNzQgNS45NjQxIDExLjM0MjUgNS4zMTAyNkMxMi4wOTY0IDQuMDg3MTggMTMuNDUyOCAzLjI2OTIzIDE0Ljk5MzkgMy4yNjkyM0MxNi41MzQ5IDMuMjY5MjMgMTcuODg2MiA0LjA4NzE4IDE4LjY0NTIgNS4zMTAyNkMxOS4wNTAzIDUuOTY0MSAxOS4yODM2IDYuNzM1OSAxOS4yODM2IDcuNTYxNTRWNy44TDIyLjU1MDMgOS42ODcxOFY3LjU2NDFDMjIuNTUwMyA2LjQwNTEzIDIyLjI4ODggNS4zMDUxMyAyMS44MTk2IDQuMzIzMDhMMjEuODIyMSA0LjMyMDUxWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzExNTIxXzM1OTMpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMTE1MjFfMzU5MyIgeDE9Ii0xLjc1MzQxZS0wNyIgeTE9IjEzLjE2NTMiIHgyPSIyOS45OTIzIiB5Mj0iMTMuMTY1MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjU1N0ZGIi8+CjxzdG9wIG9mZnNldD0iMC4zMyIgc3RvcC1jb2xvcj0iI0FBM0ZGRiIvPgo8c3RvcCBvZmZzZXQ9IjAuNjYiIHN0b3AtY29sb3I9IiNGQ0FBNEEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjg1MjJFIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" alt="" width="24" height="24">
               </span>
               <h3>Prime Automation</h3>
-              <span class="plan-tag">Free</span>
+              <span class="plan-tag">Basic</span>
             </header>
             <dl class="product-details">
               <div>
-                <dt>Status</dt>
-                <dd>Free forever</dd>
+                <dt>Price</dt>
+                <dd>$87.59 <span class="price-period">/ month</span></dd>
               </div>
               <div>
-                <dt>More bots</dt>
-                <dd>With a paid plan</dd>
+                <dt>Renews</dt>
+                <dd><time datetime="2026-12-15">Dec 15, 2026</time></dd>
               </div>
             </dl>
-            <button class="plan-button plan-button-primary" type="button">Upgrade</button>
+            <a class="plan-button" href="plans-mockup.html#prime-automation" aria-label="Change Prime Automation plan">Change plan</a>
           </article>
         </div>
       </section>
@@ -678,7 +671,7 @@
               <li class="setup-step">
                 <span class="step-icon" role="img" aria-label="Incomplete"></span>
                 <div class="step-copy">
-                  <span class="step-title">Try Prime Automation</span>
+                  <span class="step-title">Open Prime Automation</span>
                   <span class="step-description">Ready-made trading bots</span>
                 </div>
                 <button class="text-action step-action" type="button" aria-label="Open Prime Automation">
