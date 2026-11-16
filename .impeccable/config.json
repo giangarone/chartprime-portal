@@ -83,6 +83,15 @@
         ],
         "createdAt": "2026-11-16T13:38:08.438Z",
         "reason": "Assistant: Auto top-up uses the same Inter typography as the Account and Plans mockups."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "switch-plan-mockup.html"
+        ],
+        "createdAt": "2026-11-16T14:37:37.442Z",
+        "reason": "Assistant: Inter matches the typography already established in the ChartPrime Plans, Billing, and cancellation pages."
       }
     ]
   }

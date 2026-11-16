@@ -804,7 +804,7 @@
               <span class="plan-amount">$67</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Pro">Switch plan</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-pro" data-switch-plan aria-label="Switch plan · MarketStream Pro">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -827,7 +827,7 @@
               <span class="plan-amount">$117</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Plus">Switch plan</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-plus" data-switch-plan aria-label="Switch plan · MarketStream Plus">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -850,7 +850,7 @@
               <span class="plan-amount">$149</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Ultra">Switch plan</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-ultra" data-switch-plan aria-label="Switch plan · MarketStream Ultra">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -878,7 +878,7 @@
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
             <a class="plan-button" href="billing-mockup.html" data-action-period="monthly" aria-describedby="marketstream-elite">Manage billing</a>
-            <button class="plan-button" type="button" data-action-period="yearly" aria-describedby="marketstream-elite" hidden>Switch to yearly</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=marketstream-elite&amp;period=yearly" data-action-period="yearly" aria-describedby="marketstream-elite" hidden>Switch to yearly</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -947,7 +947,7 @@
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
             <a class="plan-button" href="billing-mockup.html#prime-automation-charge" data-action-period="monthly" aria-describedby="automation-basic">Manage billing</a>
-            <button class="plan-button" type="button" data-action-period="yearly" aria-describedby="automation-basic" hidden>Switch to yearly</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=automation-basic&amp;period=yearly" data-action-period="yearly" aria-describedby="automation-basic" hidden>Switch to yearly</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -968,7 +968,7 @@
               <span class="plan-amount">$119.99</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button" type="button" aria-label="Switch plan · Prime Automation Pro">Switch plan</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=automation-pro" data-switch-plan aria-label="Switch plan · Prime Automation Pro">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -988,7 +988,7 @@
               <span class="plan-amount">$199</span><span class="price-period">/ month</span>
               <span class="price-equivalent">Billed monthly, cancel anytime</span>
             </p>
-            <button class="plan-button" type="button" aria-label="Switch plan · Prime Automation Builder">Switch plan</button>
+            <a class="plan-button" href="switch-plan-mockup.html?plan=automation-builder" data-switch-plan aria-label="Switch plan · Prime Automation Builder">Switch plan</a>
           </header>
           <div class="plan-features">
             <ul class="feature-list">
@@ -1059,14 +1059,14 @@
             <span class="policy-icon" aria-hidden="true"><span class="activation-icon"></span></span>
             <div>
               <h3>Starts right away</h3>
-              <p>Your new plan starts after payment.</p>
+              <p>Your new plan starts when you complete checkout.</p>
             </div>
           </div>
           <div class="policy-item">
             <span class="policy-icon" aria-hidden="true"><span class="credit-clock-icon"></span></span>
             <div>
               <h3>Credit for unused time</h3>
-              <p>Unused value goes toward today’s payment.</p>
+              <p>Unused value reduces today’s charge or covers time on your new plan.</p>
             </div>
           </div>
           <div class="policy-item">
@@ -1146,6 +1146,8 @@
       maximumFractionDigits: 2,
     });
 
+    const returningToYearly = new URLSearchParams(location.search).get('period') === 'yearly';
+
     for (const cycle of document.querySelectorAll('.billing-cycle')) {
       const panel = cycle.closest('[role="tabpanel"]');
       const options = cycle.querySelectorAll('.billing-period');
@@ -1161,6 +1163,7 @@
           equivalent,
         };
       });
+      const switchLinks = panel.querySelectorAll('[data-switch-plan]');
       const billingActions = panel.querySelectorAll('[data-action-period]');
       const currentCard = panel.querySelector('.plan-card.is-current');
 
@@ -1184,8 +1187,18 @@
             action.hidden = action.dataset.actionPeriod !== option.value;
           }
 
+          for (const link of switchLinks) {
+            const url = new URL(link.href);
+            url.searchParams.set('period', option.value);
+            link.href = url.href;
+          }
+
           if (currentCard) currentCard.classList.toggle('is-current', !yearly);
         });
+      }
+
+      if (returningToYearly && !panel.hidden) {
+        cycle.querySelector('[value="yearly"]').click();
       }
     }
   </script>
