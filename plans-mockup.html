@@ -101,12 +101,14 @@
       white-space: nowrap;
     }
 
-    .nav-item:hover, .nav-item[aria-current] { color: var(--text); }
+    .nav-item:hover, .nav-item[aria-current],
+    .product-tab:hover, .product-tab[aria-selected="true"] { color: var(--text); }
 
-    .nav-item[aria-current]::after {
+    .nav-item[aria-current]::after,
+    .product-tab[aria-selected="true"]::after {
       content: "";
       position: absolute;
-      inset: auto 6px -1px;
+      inset: auto var(--tab-padding, 6px) -1px;
       height: 2px;
       background: var(--text);
       border-radius: 2px 2px 0 0;
@@ -233,31 +235,23 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding-bottom: 9px;
       border-bottom: 1px solid var(--divider);
     }
 
     .product-tab {
+      --tab-padding: 13px;
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 44px;
-      padding: 8px 13px;
+      padding: 8px var(--tab-padding);
       gap: 8px;
-      border: 1px solid transparent;
-      border-radius: var(--control-radius);
+      border: 0;
       background: transparent;
-      color: var(--secondary);
+      color: var(--muted);
       font-weight: 500;
       white-space: nowrap;
-    }
-
-    .product-tab:hover { background: var(--surface); color: var(--text); }
-
-    .product-tab[aria-selected="true"] {
-      border-color: var(--border);
-      background: var(--raised);
-      color: var(--text);
     }
 
     .product-tab img {
@@ -694,7 +688,7 @@
       h1 { font-size: 1.875rem; }
       .page-intro { margin-bottom: 18px; }
       .product-tabs { gap: 3px; }
-      .product-tab { padding-inline: 8px; font-size: 0.8125rem; }
+      .product-tab { --tab-padding: 8px; font-size: 0.8125rem; }
       .product-tab img, .credit-icon { width: 16px; height: 16px; }
       .panel-heading { margin-top: 18px; }
       .free-strip-pricing { text-align: start; }
@@ -706,12 +700,12 @@
 
     @media (max-width: 30rem) {
       .product-tabs { flex-wrap: nowrap; gap: 2px; }
-      .product-tab { flex: 1 0 auto; padding-inline: 4px; }
+      .product-tab { --tab-padding: 4px; flex: 1 0 auto; }
       .product-tab img, .credit-icon { display: none; }
     }
 
     @media (max-width: 23rem) {
-      .product-tab { padding-inline: 2px; }
+      .product-tab { --tab-padding: 2px; }
       .credit-panel { padding-inline: 10px; }
       .credit-table .plan-button { padding-inline: 8px; }
     }
