@@ -358,6 +358,76 @@
       object-fit: contain;
     }
 
+    .security-link .connection-icon { color: var(--secondary); }
+
+    .key-icon {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      margin-inline-end: 8px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+      transform: rotate(-35deg);
+    }
+
+    .key-icon::before, .key-icon::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      background: currentColor;
+    }
+
+    .key-icon::before {
+      left: 100%;
+      width: 11px;
+      height: 1.5px;
+      transform: translateY(-50%);
+    }
+
+    .key-icon::after {
+      left: 9px;
+      width: 1.5px;
+      height: 4px;
+      box-shadow: 4px 0 currentColor;
+    }
+
+    .monitor-icon {
+      position: relative;
+      width: 17px;
+      height: 12px;
+      margin-top: -2px;
+      border: 1.5px solid currentColor;
+      border-radius: 2px;
+    }
+
+    .monitor-icon::after {
+      content: "";
+      position: absolute;
+      inset: 100% 3px auto;
+      height: 4px;
+      border-bottom: 1.5px solid currentColor;
+    }
+
+    .link-icon {
+      position: relative;
+      width: 18px;
+      height: 8px;
+      transform: rotate(-35deg);
+    }
+
+    .link-icon::before, .link-icon::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 10px;
+      height: 8px;
+      border: 1.5px solid currentColor;
+      border-radius: 5px;
+    }
+
+    .link-icon::before { left: 0; }
+    .link-icon::after { right: 0; }
+
     .connection-status {
       display: inline-flex;
       margin-inline-start: 5px;
@@ -539,23 +609,32 @@
         <h2 class="section-title" id="security-heading">Sign-in and security</h2>
         <div class="panel settings-panel">
           <a class="settings-row security-link" id="passkeys" href="security-mockup.html#passkeys">
-            <span class="row-copy">
-              <span class="row-label">Passkeys</span>
-              <span class="row-meta">Set up your first passkey for one-tap sign-in.</span>
+            <span class="connection">
+              <span class="connection-icon" aria-hidden="true"><span class="key-icon"></span></span>
+              <span class="row-copy">
+                <span class="row-label">Passkeys</span>
+                <span class="row-meta">Set up your first passkey for one-tap sign-in.</span>
+              </span>
             </span>
             <span class="chevron" aria-hidden="true"></span>
           </a>
           <a class="settings-row security-link" href="security-mockup.html#sign-in-methods">
-            <span class="row-copy">
-              <span class="row-label">Sign-in methods</span>
-              <span class="row-meta">Email code and Discord</span>
+            <span class="connection">
+              <span class="connection-icon" aria-hidden="true"><span class="link-icon"></span></span>
+              <span class="row-copy">
+                <span class="row-label">Sign-in methods</span>
+                <span class="row-meta">Email code and Discord</span>
+              </span>
             </span>
             <span class="chevron" aria-hidden="true"></span>
           </a>
           <a class="settings-row security-link" href="security-mockup.html#devices">
-            <span class="row-copy">
-              <span class="row-label">Devices</span>
-              <span class="row-meta">Signed in on 1 device</span>
+            <span class="connection">
+              <span class="connection-icon" aria-hidden="true"><span class="monitor-icon"></span></span>
+              <span class="row-copy">
+                <span class="row-label">Devices</span>
+                <span class="row-meta">Signed in on 1 device</span>
+              </span>
             </span>
             <span class="chevron" aria-hidden="true"></span>
           </a>
