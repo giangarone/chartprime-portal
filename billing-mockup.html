@@ -470,10 +470,16 @@
     .text-control .chevron-down { margin-right: 2px; }
     .text-control[aria-expanded="true"] .chevron-down { transform: translateY(1px) rotate(225deg); }
 
-    .receipt-details {
-      padding: 15px 0 18px;
-      border-top: 1px solid var(--divider);
+    .history-table td.receipt-cell {
+      width: auto;
+      padding: 0;
+      text-align: left;
+      white-space: normal;
     }
+
+    .receipt-details { padding: 15px 0 18px; }
+
+    .history-table tbody tr.receipt-row[hidden] { display: none; }
 
     .receipt-details h3 {
       margin-bottom: 9px;
@@ -556,6 +562,13 @@
       .history-date { grid-area: date; font-size: 0.8125rem; }
       .history-status { grid-area: status; justify-self: end; }
       .history-table td.history-receipt { grid-area: receipt; text-align: left; }
+
+      .history-table tbody tr.receipt-row {
+        display: block;
+        padding-block: 0;
+      }
+
+      .history-table tbody tr.receipt-row td { display: block; }
 
       .receipt-details dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     }
@@ -721,6 +734,27 @@
                 </button>
               </td>
             </tr>
+            <tr class="receipt-row" id="receipt-preview" role="row" hidden>
+              <td class="receipt-cell" colspan="5" role="cell">
+                <section class="receipt-details" aria-labelledby="receipt-heading">
+                  <h3 id="receipt-heading">Receipt preview</h3>
+                  <dl>
+                    <div>
+                      <dt>Subscription</dt>
+                      <dd>MarketStream Elite</dd>
+                    </div>
+                    <div>
+                      <dt>Paid on</dt>
+                      <dd><time datetime="2026-11-15">Nov 15, 2026</time></dd>
+                    </div>
+                    <div>
+                      <dt>Total paid</dt>
+                      <dd>$199.00</dd>
+                    </div>
+                  </dl>
+                </section>
+              </td>
+            </tr>
             <tr role="row">
               <td class="history-date" role="cell"><time datetime="2026-10-15">Oct 15, 2026</time></td>
               <td class="history-description" role="cell">MarketStream Elite</td>
@@ -732,6 +766,27 @@
                   <span class="receipt-label">View receipt</span>
                   <span class="chevron chevron-down" aria-hidden="true"></span>
                 </button>
+              </td>
+            </tr>
+            <tr class="receipt-row" id="receipt-preview-oct" role="row" hidden>
+              <td class="receipt-cell" colspan="5" role="cell">
+                <section class="receipt-details" aria-labelledby="receipt-heading-oct">
+                  <h3 id="receipt-heading-oct">Receipt preview</h3>
+                  <dl>
+                    <div>
+                      <dt>Subscription</dt>
+                      <dd>MarketStream Elite</dd>
+                    </div>
+                    <div>
+                      <dt>Paid on</dt>
+                      <dd><time datetime="2026-10-15">Oct 15, 2026</time></dd>
+                    </div>
+                    <div>
+                      <dt>Total paid</dt>
+                      <dd>$199.00</dd>
+                    </div>
+                  </dl>
+                </section>
               </td>
             </tr>
             <tr role="row">
@@ -747,6 +802,27 @@
                 </button>
               </td>
             </tr>
+            <tr class="receipt-row" id="receipt-preview-sep" role="row" hidden>
+              <td class="receipt-cell" colspan="5" role="cell">
+                <section class="receipt-details" aria-labelledby="receipt-heading-sep">
+                  <h3 id="receipt-heading-sep">Receipt preview</h3>
+                  <dl>
+                    <div>
+                      <dt>Subscription</dt>
+                      <dd>MarketStream Elite</dd>
+                    </div>
+                    <div>
+                      <dt>Paid on</dt>
+                      <dd><time datetime="2026-09-15">Sep 15, 2026</time></dd>
+                    </div>
+                    <div>
+                      <dt>Total paid</dt>
+                      <dd>$199.00</dd>
+                    </div>
+                  </dl>
+                </section>
+              </td>
+            </tr>
             <tr role="row">
               <td class="history-date" role="cell"><time datetime="2026-08-15">Aug 15, 2026</time></td>
               <td class="history-description" role="cell">Prime Automation Basic</td>
@@ -758,6 +834,27 @@
                   <span class="receipt-label">View receipt</span>
                   <span class="chevron chevron-down" aria-hidden="true"></span>
                 </button>
+              </td>
+            </tr>
+            <tr class="receipt-row" id="receipt-preview-aug" role="row" hidden>
+              <td class="receipt-cell" colspan="5" role="cell">
+                <section class="receipt-details" aria-labelledby="receipt-heading-aug">
+                  <h3 id="receipt-heading-aug">Receipt preview</h3>
+                  <dl>
+                    <div>
+                      <dt>Subscription</dt>
+                      <dd>Prime Automation Basic</dd>
+                    </div>
+                    <div>
+                      <dt>Paid on</dt>
+                      <dd><time datetime="2026-08-15">Aug 15, 2026</time></dd>
+                    </div>
+                    <div>
+                      <dt>Total paid</dt>
+                      <dd>$87.59</dd>
+                    </div>
+                  </dl>
+                </section>
               </td>
             </tr>
             <tr role="row">
@@ -773,93 +870,29 @@
                 </button>
               </td>
             </tr>
+            <tr class="receipt-row" id="receipt-preview-jul" role="row" hidden>
+              <td class="receipt-cell" colspan="5" role="cell">
+                <section class="receipt-details" aria-labelledby="receipt-heading-jul">
+                  <h3 id="receipt-heading-jul">Receipt preview</h3>
+                  <dl>
+                    <div>
+                      <dt>Subscription</dt>
+                      <dd>MarketStream Plus</dd>
+                    </div>
+                    <div>
+                      <dt>Paid on</dt>
+                      <dd><time datetime="2026-07-15">Jul 15, 2026</time></dd>
+                    </div>
+                    <div>
+                      <dt>Total paid</dt>
+                      <dd>$117.00</dd>
+                    </div>
+                  </dl>
+                </section>
+              </td>
+            </tr>
           </tbody>
         </table>
-        <section class="receipt-details" id="receipt-preview" aria-labelledby="receipt-heading" hidden>
-          <h3 id="receipt-heading">Receipt preview</h3>
-          <dl>
-            <div>
-              <dt>Subscription</dt>
-              <dd>MarketStream Elite</dd>
-            </div>
-            <div>
-              <dt>Paid on</dt>
-              <dd><time datetime="2026-11-15">Nov 15, 2026</time></dd>
-            </div>
-            <div>
-              <dt>Total paid</dt>
-              <dd>$199.00</dd>
-            </div>
-          </dl>
-        </section>
-        <section class="receipt-details" id="receipt-preview-oct" aria-labelledby="receipt-heading-oct" hidden>
-          <h3 id="receipt-heading-oct">Receipt preview</h3>
-          <dl>
-            <div>
-              <dt>Subscription</dt>
-              <dd>MarketStream Elite</dd>
-            </div>
-            <div>
-              <dt>Paid on</dt>
-              <dd><time datetime="2026-10-15">Oct 15, 2026</time></dd>
-            </div>
-            <div>
-              <dt>Total paid</dt>
-              <dd>$199.00</dd>
-            </div>
-          </dl>
-        </section>
-        <section class="receipt-details" id="receipt-preview-sep" aria-labelledby="receipt-heading-sep" hidden>
-          <h3 id="receipt-heading-sep">Receipt preview</h3>
-          <dl>
-            <div>
-              <dt>Subscription</dt>
-              <dd>MarketStream Elite</dd>
-            </div>
-            <div>
-              <dt>Paid on</dt>
-              <dd><time datetime="2026-09-15">Sep 15, 2026</time></dd>
-            </div>
-            <div>
-              <dt>Total paid</dt>
-              <dd>$199.00</dd>
-            </div>
-          </dl>
-        </section>
-        <section class="receipt-details" id="receipt-preview-aug" aria-labelledby="receipt-heading-aug" hidden>
-          <h3 id="receipt-heading-aug">Receipt preview</h3>
-          <dl>
-            <div>
-              <dt>Subscription</dt>
-              <dd>Prime Automation Basic</dd>
-            </div>
-            <div>
-              <dt>Paid on</dt>
-              <dd><time datetime="2026-08-15">Aug 15, 2026</time></dd>
-            </div>
-            <div>
-              <dt>Total paid</dt>
-              <dd>$87.59</dd>
-            </div>
-          </dl>
-        </section>
-        <section class="receipt-details" id="receipt-preview-jul" aria-labelledby="receipt-heading-jul" hidden>
-          <h3 id="receipt-heading-jul">Receipt preview</h3>
-          <dl>
-            <div>
-              <dt>Subscription</dt>
-              <dd>MarketStream Plus</dd>
-            </div>
-            <div>
-              <dt>Paid on</dt>
-              <dd><time datetime="2026-07-15">Jul 15, 2026</time></dd>
-            </div>
-            <div>
-              <dt>Total paid</dt>
-              <dd>$117.00</dd>
-            </div>
-          </dl>
-        </section>
       </div>
       <p class="help-contact">
         Questions about a charge?
