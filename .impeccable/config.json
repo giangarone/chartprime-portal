@@ -56,6 +56,24 @@
         ],
         "createdAt": "2026-11-16T13:06:29.204Z",
         "reason": "Assistant: Account uses the Inter typography established in the existing portal mockups."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "security-mockup.html"
+        ],
+        "createdAt": "2026-11-16T13:12:43.519Z",
+        "reason": "Assistant: Sign-in and security uses the Inter typography established across the portal mockups."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "change-email-mockup.html"
+        ],
+        "createdAt": "2026-11-16T13:20:40.338Z",
+        "reason": "Assistant: the email verification page uses the same Inter typography as Account and Sign-in and security."
       }
     ]
   }

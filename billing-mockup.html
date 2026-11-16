@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <title>Billing | ChartPrime</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
     :root {
       color-scheme: dark;
@@ -111,16 +112,78 @@
       border-radius: 2px 2px 0 0;
     }
 
+    .account-menu {
+      position: relative;
+      margin-inline-start: auto;
+    }
+
     .account-button {
       display: flex;
       align-items: center;
       gap: 11px;
-      margin-left: auto;
       padding: 3px 4px;
-      border: 0;
       border-radius: var(--control-radius);
-      background: transparent;
       color: var(--muted);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .account-button::-webkit-details-marker { display: none; }
+
+    .account-menu[open] .account-button .chevron-down {
+      transform: translateY(1px) rotate(225deg);
+    }
+
+    .account-menu-panel {
+      position: absolute;
+      z-index: 2;
+      inset: calc(100% + 8px) 0 auto auto;
+      width: min(260px, 100vw - 2 * var(--page-gutter));
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .account-menu-identity {
+      margin-bottom: 4px;
+      padding: 6px 8px 10px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .account-menu-name {
+      font-size: 0.875rem;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-email {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-action {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 36px;
+      padding: 7px 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.8125rem;
+      text-align: start;
+      text-decoration: none;
+    }
+
+    .account-menu-action:hover, .account-menu-action:focus-visible { background: var(--raised); }
+
+    .account-menu-footer {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid var(--divider);
     }
 
     .avatar {
@@ -136,7 +199,7 @@
       font-weight: 600;
     }
 
-    .account-button:hover .avatar { background: var(--raised); }
+    .account-button:hover .avatar, .account-menu[open] .avatar { background: var(--raised); }
 
     .chevron {
       display: inline-block;
@@ -452,7 +515,7 @@
 
       .brand { justify-self: start; }
       .brand img { width: 137px; }
-      .account-button { grid-area: 1 / 2; }
+      .account-menu { grid-area: 1 / 2; }
       .navigation {
         grid-column: 1 / -1;
         gap: clamp(14px, 5vw, 28px);
@@ -525,10 +588,26 @@
         <a class="nav-item" href="#top" aria-current="page">Billing</a>
         <a class="nav-item" href="account-mockup.html">Account</a>
       </nav>
-      <button class="account-button" type="button" aria-label="Gian’s account menu">
-        <span class="avatar" aria-hidden="true">GG</span>
-        <span class="chevron chevron-down" aria-hidden="true"></span>
-      </button>
+      <details class="account-menu">
+        <summary class="account-button" aria-label="Gian’s account menu">
+          <span class="avatar" aria-hidden="true">GG</span>
+          <span class="chevron chevron-down" aria-hidden="true"></span>
+        </summary>
+        <div class="account-menu-panel">
+          <div class="account-menu-identity">
+            <p class="account-menu-name">Gian G.</p>
+            <p class="account-menu-email">garonegianfranco@gmail.com</p>
+          </div>
+          <nav aria-label="Account shortcuts">
+            <a class="account-menu-action" href="security-mockup.html">Sign-in and security</a>
+            <a class="account-menu-action" href="overview-mockup.html#help-heading">Help and guides</a>
+            <a class="account-menu-action" href="mailto:support@chartprime.com">Contact support</a>
+          </nav>
+          <div class="account-menu-footer">
+            <button class="account-menu-action" type="button">Sign out</button>
+          </div>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -683,6 +762,33 @@
         if (label) {
           label.textContent = expanded ? control.dataset.labelExpanded : control.dataset.labelCollapsed;
         }
+      });
+    }
+  </script>
+  <script>
+    const accountMenu = document.querySelector('.account-menu');
+    const accountTrigger = accountMenu.querySelector('summary');
+
+    document.addEventListener('click', event => {
+      if (!accountMenu.contains(event.target)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('focusout', event => {
+      if (event.relatedTarget && !accountMenu.contains(event.relatedTarget)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && accountMenu.open) {
+        event.preventDefault();
+        accountMenu.open = false;
+        accountTrigger.focus();
+      }
+    });
+
+    for (const action of accountMenu.querySelectorAll('.account-menu-action')) {
+      action.addEventListener('click', () => {
+        accountMenu.open = false;
+        accountTrigger.focus({ preventScroll: true });
       });
     }
   </script>

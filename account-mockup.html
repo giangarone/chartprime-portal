@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <title>Account | ChartPrime</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
     :root {
       color-scheme: dark;
@@ -112,16 +113,78 @@
       border-radius: 2px 2px 0 0;
     }
 
+    .account-menu {
+      position: relative;
+      margin-inline-start: auto;
+    }
+
     .account-button {
       display: flex;
       align-items: center;
       gap: 11px;
-      margin-left: auto;
       padding: 3px 4px;
-      border: 0;
       border-radius: var(--control-radius);
-      background: transparent;
       color: var(--muted);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .account-button::-webkit-details-marker { display: none; }
+
+    .account-menu[open] .account-button .chevron-down {
+      transform: translateY(1px) rotate(225deg);
+    }
+
+    .account-menu-panel {
+      position: absolute;
+      z-index: 2;
+      inset: calc(100% + 8px) 0 auto auto;
+      width: min(260px, 100vw - 2 * var(--page-gutter));
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .account-menu-identity {
+      margin-bottom: 4px;
+      padding: 6px 8px 10px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .account-menu-name {
+      font-size: 0.875rem;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-email {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-action {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 36px;
+      padding: 7px 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.8125rem;
+      text-align: start;
+      text-decoration: none;
+    }
+
+    .account-menu-action:hover, .account-menu-action:focus-visible { background: var(--raised); }
+
+    .account-menu-footer {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid var(--divider);
     }
 
     .avatar {
@@ -137,7 +200,7 @@
       font-weight: 600;
     }
 
-    .account-button:hover .avatar { background: var(--raised); }
+    .account-button:hover .avatar, .account-menu[open] .avatar { background: var(--raised); }
 
     .chevron {
       display: inline-block;
@@ -268,22 +331,10 @@
 
     #passkeys { scroll-margin-top: 18px; }
 
-    .device-details summary {
-      list-style: none;
-      cursor: pointer;
-    }
-
-    .device-details summary::-webkit-details-marker { display: none; }
-    .device-details .row-copy > span { display: block; }
-    .device-details summary:hover .row-label { text-decoration: underline; text-underline-offset: 3px; }
-    .device-details summary .chevron { margin-inline-end: 3px; color: var(--muted); }
-    .device-details[open] summary .chevron { transform: translateY(1px) rotate(225deg); }
-
-    .device-note {
-      padding: 0 0 13px;
-      color: var(--secondary);
-      font-size: 0.8125rem;
-    }
+    .security-link { text-decoration: none; }
+    .security-link .row-copy > span { display: block; }
+    .security-link .chevron { margin-inline-end: 3px; color: var(--muted); }
+    .security-link:hover .row-label { text-decoration: underline; text-underline-offset: 3px; }
 
     .connection {
       display: flex;
@@ -397,7 +448,7 @@
 
       .brand { justify-self: start; }
       .brand img { width: 137px; }
-      .account-button { grid-area: 1 / 2; }
+      .account-menu { grid-area: 1 / 2; }
       .navigation {
         grid-column: 1 / -1;
         gap: clamp(14px, 5vw, 28px);
@@ -413,7 +464,7 @@
 
     @media (max-width: 23rem) {
       .settings-row { flex-wrap: wrap; }
-      .device-details summary { flex-wrap: nowrap; }
+      .security-link { flex-wrap: nowrap; }
     }
   </style>
 </head>
@@ -430,10 +481,26 @@
         <a class="nav-item" href="billing-mockup.html">Billing</a>
         <a class="nav-item" href="#top" aria-current="page">Account</a>
       </nav>
-      <button class="account-button" type="button" aria-label="Gian’s account menu">
-        <span class="avatar" aria-hidden="true">GG</span>
-        <span class="chevron chevron-down" aria-hidden="true"></span>
-      </button>
+      <details class="account-menu">
+        <summary class="account-button" aria-label="Gian’s account menu">
+          <span class="avatar" aria-hidden="true">GG</span>
+          <span class="chevron chevron-down" aria-hidden="true"></span>
+        </summary>
+        <div class="account-menu-panel">
+          <div class="account-menu-identity">
+            <p class="account-menu-name">Gian G.</p>
+            <p class="account-menu-email">garonegianfranco@gmail.com</p>
+          </div>
+          <nav aria-label="Account shortcuts">
+            <a class="account-menu-action" href="security-mockup.html">Sign-in and security</a>
+            <a class="account-menu-action" href="overview-mockup.html#help-heading">Help and guides</a>
+            <a class="account-menu-action" href="mailto:support@chartprime.com">Contact support</a>
+          </nav>
+          <div class="account-menu-footer">
+            <button class="account-menu-action" type="button">Sign out</button>
+          </div>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -466,7 +533,7 @@
               <p class="profile-value">garonegianfranco@gmail.com</p>
               <p class="row-meta">Used for sign-in codes and receipts.</p>
             </div>
-            <button class="control" type="button" aria-label="Change email">Change</button>
+            <a class="control" href="change-email-mockup.html" aria-label="Change email">Change</a>
           </div>
           <div class="settings-row">
             <div class="row-copy">
@@ -480,29 +547,27 @@
       <section aria-labelledby="security-heading">
         <h2 class="section-title" id="security-heading">Sign-in and security</h2>
         <div class="panel settings-panel">
-          <div class="settings-row" id="passkeys">
-            <div class="row-copy">
-              <h3 class="row-label">Passkeys</h3>
-              <p class="row-meta">Set up your first passkey for one-tap sign-in.</p>
-            </div>
-            <button class="control" type="button">Add passkey</button>
-          </div>
-          <div class="settings-row">
-            <div class="row-copy">
-              <h3 class="row-label">Sign-in methods</h3>
-              <p class="row-meta">Email code and Discord</p>
-            </div>
-          </div>
-          <details class="device-details">
-            <summary class="settings-row">
-              <span class="row-copy">
-                <span class="row-label">Devices</span>
-                <span class="row-meta">Signed in on 1 device</span>
-              </span>
-              <span class="chevron chevron-down" aria-hidden="true"></span>
-            </summary>
-            <p class="device-note">This device is your current session.</p>
-          </details>
+          <a class="settings-row security-link" id="passkeys" href="security-mockup.html#passkeys">
+            <span class="row-copy">
+              <span class="row-label">Passkeys</span>
+              <span class="row-meta">Set up your first passkey for one-tap sign-in.</span>
+            </span>
+            <span class="chevron" aria-hidden="true"></span>
+          </a>
+          <a class="settings-row security-link" href="security-mockup.html#sign-in-methods">
+            <span class="row-copy">
+              <span class="row-label">Sign-in methods</span>
+              <span class="row-meta">Email code and Discord</span>
+            </span>
+            <span class="chevron" aria-hidden="true"></span>
+          </a>
+          <a class="settings-row security-link" href="security-mockup.html#devices">
+            <span class="row-copy">
+              <span class="row-label">Devices</span>
+              <span class="row-meta">Signed in on 1 device</span>
+            </span>
+            <span class="chevron" aria-hidden="true"></span>
+          </a>
         </div>
       </section>
 
@@ -616,12 +681,40 @@
       }
 
       displayName.textContent = name;
+      document.querySelector('.account-menu-name').textContent = name;
       const account = document.querySelector('.account-button');
       const initials = name.split(/\s+/).slice(0, 2).map(word => word[0].toUpperCase()).join('');
       account.querySelector('.avatar').textContent = initials;
       account.setAttribute('aria-label', name + ' account menu');
       closeEditor();
     });
+  </script>
+  <script>
+    const accountMenu = document.querySelector('.account-menu');
+    const accountTrigger = accountMenu.querySelector('summary');
+
+    document.addEventListener('click', event => {
+      if (!accountMenu.contains(event.target)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('focusout', event => {
+      if (event.relatedTarget && !accountMenu.contains(event.relatedTarget)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && accountMenu.open) {
+        event.preventDefault();
+        accountMenu.open = false;
+        accountTrigger.focus();
+      }
+    });
+
+    for (const action of accountMenu.querySelectorAll('.account-menu-action')) {
+      action.addEventListener('click', () => {
+        accountMenu.open = false;
+        accountTrigger.focus({ preventScroll: true });
+      });
+    }
   </script>
 </body>
 </html>

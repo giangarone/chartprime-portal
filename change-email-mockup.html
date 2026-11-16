@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Change your email | ChartPrime</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0c0c0c;
+      --surface: #151515;
+      --raised: #202020;
+      --border: #2b2b2b;
+      --divider: #272727;
+      --text: #f4f4f4;
+      --secondary: #b9b9b9;
+      --muted: #a0a0a0;
+      --accent: #cec2ff;
+      --card-radius: 14px;
+      --control-radius: 8px;
+      --page-gutter: clamp(20px, 4.2vw, 64px);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 100%;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, p { margin: 0; }
+    a { color: inherit; }
+    button { appearance: none; font: inherit; color: inherit; cursor: pointer; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--background);
+    }
+
+    .page-width {
+      width: min(100% - var(--page-gutter) * 2, 1320px);
+      margin-inline: auto;
+    }
+
+    .site-header { border-bottom: 1px solid var(--divider); }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      min-height: 67px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      flex: none;
+      border-radius: 4px;
+    }
+
+    .brand img {
+      display: block;
+      width: 150px;
+      height: auto;
+    }
+
+    .navigation {
+      display: flex;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover, .nav-item[aria-current] { color: var(--text); }
+    .nav-item[aria-current] { font-weight: 600; }
+
+    .nav-item[aria-current]::after {
+      content: "";
+      position: absolute;
+      inset: auto 6px -1px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .account-menu {
+      position: relative;
+      margin-inline-start: auto;
+    }
+
+    .account-button {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 3px 4px;
+      border-radius: var(--control-radius);
+      color: var(--muted);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .account-button::-webkit-details-marker { display: none; }
+
+    .account-menu[open] .account-button .chevron-down {
+      transform: translateY(1px) rotate(225deg);
+    }
+
+    .account-menu-panel {
+      position: absolute;
+      z-index: 2;
+      inset: calc(100% + 8px) 0 auto auto;
+      width: min(260px, 100vw - 2 * var(--page-gutter));
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .account-menu-identity {
+      margin-bottom: 4px;
+      padding: 6px 8px 10px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .account-menu-name {
+      font-size: 0.875rem;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-email {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      overflow-wrap: anywhere;
+    }
+
+    .account-menu-action {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 36px;
+      padding: 7px 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.8125rem;
+      text-align: start;
+      text-decoration: none;
+    }
+
+    .account-menu-action:hover, .account-menu-action:focus-visible { background: var(--raised); }
+
+    .account-menu-footer {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px solid var(--divider);
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .account-button:hover .avatar, .account-menu[open] .avatar { background: var(--raised); }
+
+    .chevron {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      flex: none;
+      border: solid currentColor;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(-45deg);
+    }
+
+    .chevron-down { transform: translateY(-2px) rotate(45deg); }
+
+    main {
+      max-width: 580px;
+      padding-block: 44px 60px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 30px;
+      color: var(--accent);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .chevron-left { transform: rotate(135deg); }
+
+    h1 {
+      margin-block: 16px 20px;
+      font-size: 2.25rem;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+    }
+
+    .verification-panel {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--surface);
+    }
+
+    .verification-panel p { color: var(--secondary); }
+
+    strong {
+      color: var(--text);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .send-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      margin-top: 16px;
+      padding: 6px 15px;
+      border: 1px solid var(--text);
+      border-radius: var(--control-radius);
+      background: var(--text);
+      color: var(--surface);
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .send-code:hover {
+      border-color: #dcdcdc;
+      background: #dcdcdc;
+    }
+
+    .recovery-note {
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      overflow-wrap: anywhere;
+    }
+
+    .recovery-note a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 41rem) {
+      .header-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 12px;
+        row-gap: 0;
+        min-height: 0;
+        padding-top: 10px;
+      }
+
+      .brand { justify-self: start; }
+      .brand img { width: 137px; }
+      .account-menu { grid-area: 1 / 2; }
+      .navigation {
+        grid-column: 1 / -1;
+        gap: clamp(14px, 5vw, 28px);
+        min-height: 46px;
+      }
+
+      .nav-item { padding-inline: 2px; }
+      .nav-item[aria-current]::after { inset-inline: 2px; }
+      main { padding-block: 23px 42px; }
+
+      h1 {
+        margin-block: 13px 16px;
+        font-size: 1.875rem;
+      }
+
+      .verification-panel { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- The Send code control represents the first step in email verification. -->
+  <header class="site-header">
+    <div class="page-width header-content">
+      <a class="brand" href="overview-mockup.html">
+        <img src="data:image/webp;base64,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" alt="ChartPrime" width="304" height="48">
+      </a>
+      <nav class="navigation" aria-label="Portal">
+        <a class="nav-item" href="overview-mockup.html">Overview</a>
+        <a class="nav-item" href="plans-mockup.html">Plans</a>
+        <a class="nav-item" href="billing-mockup.html">Billing</a>
+        <a class="nav-item" href="account-mockup.html" aria-current="location">Account</a>
+      </nav>
+      <details class="account-menu">
+        <summary class="account-button" aria-label="Gian’s account menu">
+          <span class="avatar" aria-hidden="true">GG</span>
+          <span class="chevron chevron-down" aria-hidden="true"></span>
+        </summary>
+        <div class="account-menu-panel">
+          <div class="account-menu-identity">
+            <p class="account-menu-name">Gian G.</p>
+            <p class="account-menu-email">garonegianfranco@gmail.com</p>
+          </div>
+          <nav aria-label="Account shortcuts">
+            <a class="account-menu-action" href="security-mockup.html">Sign-in and security</a>
+            <a class="account-menu-action" href="overview-mockup.html#help-heading">Help and guides</a>
+            <a class="account-menu-action" href="mailto:support@chartprime.com">Contact support</a>
+          </nav>
+          <div class="account-menu-footer">
+            <button class="account-menu-action" type="button">Sign out</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="page-width">
+    <a class="back-link" href="security-mockup.html">
+      <span class="chevron chevron-left" aria-hidden="true"></span> Back to sign-in and security
+    </a>
+    <h1>Change your email</h1>
+
+    <div class="verification-panel">
+      <p>First, confirm it’s you. We’ll send a code to <strong>garonegianfranco@gmail.com</strong>.</p>
+      <button class="send-code" type="button">Send code</button>
+    </div>
+
+    <p class="recovery-note">
+      Can’t get into garonegianfranco@gmail.com? Write to <a href="mailto:support@chartprime.com">support@chartprime.com</a> and we’ll help you move your account.
+    </p>
+  </main>
+  <script>
+    const accountMenu = document.querySelector('.account-menu');
+    const accountTrigger = accountMenu.querySelector('summary');
+
+    document.addEventListener('click', event => {
+      if (!accountMenu.contains(event.target)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('focusout', event => {
+      if (event.relatedTarget && !accountMenu.contains(event.relatedTarget)) accountMenu.open = false;
+    });
+
+    accountMenu.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && accountMenu.open) {
+        event.preventDefault();
+        accountMenu.open = false;
+        accountTrigger.focus();
+      }
+    });
+
+    for (const action of accountMenu.querySelectorAll('.account-menu-action')) {
+      action.addEventListener('click', () => {
+        accountMenu.open = false;
+        accountTrigger.focus({ preventScroll: true });
+      });
+    }
+  </script>
+</body>
+</html>
