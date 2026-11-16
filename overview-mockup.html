@@ -547,8 +547,8 @@
 
     .envelope {
       position: relative;
-      width: 15px;
-      height: 11px;
+      width: 16px;
+      height: 12px;
       overflow: hidden;
       border: 1.5px solid currentColor;
       border-radius: 2px;
@@ -557,13 +557,10 @@
     .envelope::after {
       content: "";
       position: absolute;
-      top: -5.5px;
-      left: 2px;
-      width: 9px;
-      height: 9px;
-      border: solid currentColor;
-      border-width: 0 1.5px 1.5px 0;
-      transform: rotate(45deg);
+      inset: 1px 0 auto;
+      height: 6px;
+      background: currentColor;
+      clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 20%, 50% 80%, 0 20%);
     }
 
     @media (max-width: 67rem) {
@@ -752,9 +749,9 @@
                   <span class="step-title">Open Prime Automation</span>
                   <span class="step-description">Ready-made trading bots</span>
                 </div>
-                <button class="text-action step-action" type="button" aria-label="Open Prime Automation">
+                <a class="text-action step-action" href="https://www.primeautomation.ai/" target="_blank" rel="noopener" aria-label="Open Prime Automation">
                   Open <span class="chevron" aria-hidden="true"></span>
-                </button>
+                </a>
               </li>
             </ol>
           </div>
@@ -766,14 +763,14 @@
           </div>
           <ul class="panel help-panel">
             <li>
-              <button class="help-row" type="button">
+              <a class="help-row" href="https://docs.chartprime.com/" target="_blank" rel="noopener">
                 <span class="icon-tile" aria-hidden="true"><span class="book"></span></span>
                 <span class="help-copy">
                   <span class="help-title">Help and guides</span>
                   <span class="help-description">Get the most from both products</span>
                 </span>
                 <span class="chevron" aria-hidden="true"></span>
-              </button>
+              </a>
             </li>
             <li>
               <a class="help-row" href="mailto:support@chartprime.com">
