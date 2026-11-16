@@ -370,6 +370,8 @@
       white-space: nowrap;
     }
 
+    .plan-card:not(.is-current) .current-tag { display: none; }
+
     .plan-price {
       display: flex;
       flex-wrap: wrap;
@@ -417,6 +419,14 @@
     .plan-button[hidden] { display: none; }
 
     .plan-button:hover { background: var(--raised); }
+
+    .plan-card.is-current .plan-button {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--background);
+    }
+
+    .plan-card.is-current .plan-button:hover { background: #dcdcdc; }
 
     .plan-button-status {
       border-color: var(--border);
@@ -1067,6 +1077,7 @@
         };
       });
       const billingActions = panel.querySelectorAll('[data-action-period]');
+      const currentCard = panel.querySelector('.plan-card.is-current');
 
       for (const option of options) {
         option.addEventListener('click', () => {
@@ -1080,13 +1091,15 @@
             price.amount.textContent = yearly ? currency.format(price.yearly) : price.monthly;
             price.period.textContent = yearly ? '/ year' : '/ month';
             price.equivalent.textContent = yearly
-              ? 'That’s ' + currency.format(price.yearly / 12) + ' a month'
+              ? 'Billed yearly · ' + currency.format(price.yearly / 12) + '/month'
               : price.monthlyNote;
           }
 
           for (const action of billingActions) {
             action.hidden = action.dataset.actionPeriod !== option.value;
           }
+
+          if (currentCard) currentCard.classList.toggle('is-current', !yearly);
         });
       }
     }
