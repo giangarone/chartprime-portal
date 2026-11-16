@@ -427,9 +427,72 @@
     .main-column, .side-column { display: grid; gap: 29px; }
 
     .credits-panel {
+      padding: 17px 21px;
+    }
+
+    .credits-usage {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .credits-usage-header, .credits-usage-summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px 10px;
+      color: var(--secondary);
+      font-size: 0.8125rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .credits-usage-header h3 {
+      color: var(--text);
+      font-size: 0.875rem;
+      font-weight: 650;
+    }
+
+    .credits-reset { color: var(--muted); }
+
+    .credits-usage-summary strong {
+      color: var(--text);
+      font-weight: 650;
+    }
+
+    .credits-meter {
+      --track: #353535;
+      display: block;
+      width: 100%;
+      height: 6px;
+      margin-block: 11px 8px;
+      overflow: hidden;
+      border-radius: 3px;
+      background: var(--track);
+      appearance: none;
+    }
+
+    .credits-meter::-webkit-meter-bar {
+      grid-row: 1 / -1;
+      height: 100%;
+      border: 0;
+      border-radius: inherit;
+      background: var(--track);
+    }
+
+    .credits-meter::-webkit-meter-optimum-value {
+      border-radius: 3px;
+      background: var(--secondary);
+    }
+
+    .credits-meter::-moz-meter-bar {
+      border-radius: 3px;
+      background: var(--secondary);
+    }
+
+    .credits-options {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      padding: 16px 21px;
     }
 
     .credits-row {
@@ -451,8 +514,9 @@
       font-size: 0.8125rem;
     }
 
-    .credits-balance dd {
-      font-size: 1.375rem;
+    .credits-balance-value {
+      display: block;
+      font-size: 1.125rem;
       font-weight: 650;
       letter-spacing: -0.025em;
       font-variant-numeric: tabular-nums;
@@ -644,7 +708,7 @@
       .welcome { margin-bottom: 29px; }
       .overview-grid, .main-column, .side-column { gap: 25px; }
       .product-grid, .side-column { grid-template-columns: minmax(0, 1fr); }
-      .credits-panel { grid-template-columns: minmax(0, 1fr); }
+      .credits-options { grid-template-columns: minmax(0, 1fr); }
       .credits-row:first-child { padding: 0 0 12px; }
       .credits-row + .credits-row {
         padding: 12px 0 0;
@@ -656,6 +720,11 @@
     @media (max-width: 25rem) {
       .billing-summary { flex-direction: column; align-items: flex-start; }
       .billing-detail::before { display: none; }
+    }
+
+    @media (max-width: 22rem) {
+      .credits-panel { padding-inline: 15px; }
+      .credits-usage-summary { column-gap: 6px; }
     }
   </style>
 </head>
@@ -767,21 +836,39 @@
             <h2 id="credits-heading">AI credits</h2>
           </div>
           <div class="panel credits-panel">
-            <div class="credits-row">
-              <dl class="credits-balance">
-                <dt>Extra credits</dt>
-                <dd>1,386,214</dd>
-              </dl>
-              <a class="plan-button" href="plans-mockup.html#ai-credits">Buy credits</a>
-            </div>
-            <div class="credits-row">
-              <div>
-                <h3 class="top-up-title">Auto top-up <span class="plan-tag">Off</span></h3>
-                <p class="credits-description">Automatically refill a low balance.</p>
+            <div class="credits-usage">
+              <div class="credits-usage-header">
+                <h3>Included credits</h3>
+                <p class="credits-reset">Resets <time datetime="2026-12-15">Dec 15</time></p>
               </div>
-              <a class="text-action" href="auto-top-up-mockup.html" aria-label="Set up auto top-up">
-                Set up <span class="chevron" aria-hidden="true"></span>
-              </a>
+              <meter class="credits-meter" min="0" max="400000" value="212400"
+                aria-label="Included credits used this billing cycle"
+                aria-describedby="credits-used"></meter>
+              <div class="credits-usage-summary">
+                <p id="credits-used"><strong>212,400</strong> of 400,000 used</p>
+                <p><strong>187,600</strong> left</p>
+              </div>
+            </div>
+            <div class="credits-options">
+              <div class="credits-row">
+                <dl class="credits-balance">
+                  <dt>Extra credits</dt>
+                  <dd>
+                    <span class="credits-balance-value">1,386,214</span>
+                    <span class="credits-description">Never expire</span>
+                  </dd>
+                </dl>
+                <a class="plan-button" href="plans-mockup.html#ai-credits">Buy credits</a>
+              </div>
+              <div class="credits-row">
+                <div>
+                  <h3 class="top-up-title">Auto top-up <span class="plan-tag">Off</span></h3>
+                  <p class="credits-description">Automatically refill a low balance.</p>
+                </div>
+                <a class="text-action" href="auto-top-up-mockup.html" aria-label="Set up auto top-up">
+                  Set up <span class="chevron" aria-hidden="true"></span>
+                </a>
+              </div>
             </div>
           </div>
         </section>
