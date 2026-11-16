@@ -252,12 +252,11 @@
       overflow-wrap: anywhere;
     }
 
-    .send-code {
+    .verification-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 40px;
-      margin-top: 16px;
       padding: 6px 15px;
       border: 1px solid var(--text);
       border-radius: var(--control-radius);
@@ -267,10 +266,93 @@
       font-weight: 600;
     }
 
-    .send-code:hover {
+    .verification-primary:hover {
       border-color: #dcdcdc;
       background: #dcdcdc;
     }
+
+    .send-code { margin-top: 16px; }
+
+    .code-heading {
+      margin: 0 0 5px;
+      font-size: 1.125rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .code-form { margin-top: 19px; }
+
+    .code-label { font-weight: 600; }
+
+    .code-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      max-width: 19rem;
+      margin-top: 6px;
+    }
+
+    .code-input {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid #414141;
+      border-radius: var(--control-radius);
+      background: var(--background);
+      color: var(--text);
+      caret-color: var(--accent);
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.25em;
+    }
+
+    .code-input:hover { border-color: #626262; }
+
+    .code-input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .code-input[aria-invalid="true"] { border-color: #f0aaa6; }
+
+    .code-feedback {
+      margin-top: 8px;
+      color: #a7d9b6;
+      font-size: 0.8125rem;
+    }
+
+    .code-feedback:empty { margin: 0; }
+    .code-feedback[data-error] { color: #f0aaa6; }
+
+    .code-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: 10px;
+      margin-top: 18px;
+      padding-top: 5px;
+      border-top: 1px solid var(--divider);
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .resend-code {
+      min-height: 36px;
+      padding: 0;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .resend-code:hover { color: var(--text); }
 
     .recovery-note {
       margin-top: 17px;
@@ -317,7 +399,6 @@
   </style>
 </head>
 <body>
-  <!-- The Send code control represents the first step in email verification. -->
   <header class="site-header">
     <div class="page-width header-content">
       <a class="brand" href="overview-mockup.html">
@@ -359,8 +440,31 @@
     <h1>Change your email</h1>
 
     <div class="verification-panel">
-      <p>First, confirm it’s you. We’ll send a code to <strong>garonegianfranco@gmail.com</strong>.</p>
-      <button class="send-code" type="button">Send code</button>
+      <div id="send-code-step">
+        <p>First, confirm it’s you. We’ll send a code to <strong id="current-email">garonegianfranco@gmail.com</strong>.</p>
+        <button class="verification-primary send-code" id="send-code" type="button">Send code</button>
+      </div>
+
+      <section id="enter-code-step" aria-labelledby="code-heading" hidden>
+        <h2 class="code-heading" id="code-heading">Check your email</h2>
+        <p id="code-instructions">Enter the 6-digit code we sent to <strong id="code-recipient"></strong>.</p>
+
+        <form class="code-form" id="code-form" novalidate>
+          <label class="code-label" for="verification-code">Verification code</label>
+          <div class="code-controls">
+            <input class="code-input" id="verification-code" type="text" inputmode="numeric"
+              autocomplete="one-time-code" pattern="[0-9]{6}" required
+              aria-describedby="code-instructions code-feedback">
+            <button class="verification-primary" type="submit">Verify code</button>
+          </div>
+          <div class="code-feedback" id="code-feedback" role="status"></div>
+        </form>
+
+        <div class="code-footer">
+          <span id="resend-status" role="status">Didn’t get a code?</span>
+          <button class="resend-code" id="resend-code" type="button">Resend code</button>
+        </div>
+      </section>
     </div>
 
     <p class="recovery-note">
@@ -368,6 +472,51 @@
     </p>
   </main>
   <script>
+    const sendCodeStep = document.getElementById('send-code-step');
+    const enterCodeStep = document.getElementById('enter-code-step');
+    const codeForm = document.getElementById('code-form');
+    const codeInput = document.getElementById('verification-code');
+    const codeFeedback = document.getElementById('code-feedback');
+    const resendStatus = document.getElementById('resend-status');
+
+    function showCodeFeedback(message, isError = false) {
+      codeInput.setAttribute('aria-invalid', String(isError));
+      codeFeedback.toggleAttribute('data-error', isError);
+      codeFeedback.textContent = message;
+    }
+
+    document.getElementById('send-code').addEventListener('click', () => {
+      document.getElementById('code-recipient').textContent = document.getElementById('current-email').textContent;
+      sendCodeStep.hidden = true;
+      enterCodeStep.hidden = false;
+      codeInput.focus();
+    });
+
+    codeInput.addEventListener('input', () => {
+      const digits = codeInput.value.replace(/[^0-9]/g, '').slice(0, 6);
+      if (codeInput.value !== digits) codeInput.value = digits;
+      showCodeFeedback('');
+    });
+
+    codeForm.addEventListener('submit', event => {
+      event.preventDefault();
+
+      if (!codeInput.validity.valid) {
+        showCodeFeedback('Enter the 6-digit code.', true);
+        codeInput.focus();
+        return;
+      }
+
+      showCodeFeedback('Code verified.');
+    });
+
+    document.getElementById('resend-code').addEventListener('click', () => {
+      codeForm.reset();
+      showCodeFeedback('');
+      resendStatus.textContent = 'A new code was sent.';
+      codeInput.focus();
+    });
+
     const accountMenu = document.querySelector('.account-menu');
     const accountTrigger = accountMenu.querySelector('summary');
 
