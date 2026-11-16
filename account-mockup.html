@@ -18,7 +18,6 @@
       --secondary: #b9b9b9;
       --muted: #a0a0a0;
       --accent: #cec2ff;
-      --accent-surface: #2b233e;
       --success: #7ce1b0;
       --success-surface: #1d3128;
       --card-radius: 14px;
@@ -359,13 +358,6 @@
       object-fit: contain;
     }
 
-    .discord-avatar {
-      border-radius: 50%;
-      background: var(--accent-surface);
-      color: var(--accent);
-      font-weight: 650;
-    }
-
     .connection-status {
       display: inline-flex;
       margin-inline-start: 5px;
@@ -575,7 +567,9 @@
         <div class="panel settings-panel">
           <div class="settings-row">
             <div class="connection">
-              <span class="connection-icon discord-avatar" aria-hidden="true">G</span>
+              <span class="connection-icon">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeBAMAAACs80HuAAAAD1BMVEUYGBgpK01KUrY5P4FaZepH7hZ0AAAAAXRSTlMAQObYZgAAALxJREFUKM+VktERhCAMRINQgN5YAKAF6EkBd5r+azphA4PKz+VH5kF2NwhRLOVt/OhpoVIv5i+pngzzllngqg4wzZfqEzRXaJ/duZ9v1ZBEv7nDz1MyRm7AveETk8JnmtMZL7CDTNpboGVhviTpM7aCvZG8I2zRNwo0CAgYnicPwKKpEXTGnriPFWSPnG+u4W3O/6BoneVCgrDFtexOxTNO7rOnYVsHjO7y38zvYi6vIeRFHNbl5VbeVZfYD0vCbxxo32MFAAAAAElFTkSuQmCC" alt="" width="22" height="22">
+              </span>
               <div class="row-copy">
                 <h3 class="row-label">Discord <span class="connection-status">Connected</span></h3>
                 <p class="row-meta">@Gian G. · Syncs member roles</p>
@@ -625,14 +619,14 @@
             </div>
             <a class="control" href="plans-mockup.html#ai-credits">Buy credits</a>
           </div>
-          <div class="settings-row">
+          <div class="settings-row" id="auto-top-up">
             <div class="row-copy">
               <h3 class="row-label">Auto top-up <span class="off-tag">Off</span></h3>
               <p class="row-meta">Automatically refill a low balance.</p>
             </div>
-            <button class="control" type="button">Set up</button>
+            <a class="control" href="auto-top-up-mockup.html" aria-label="Set up auto top-up">Set up</a>
           </div>
-          <p class="credit-note">Shared across MarketStream’s Prism AI and Prime Automation. Unused included credits expire at the end of each billing period.</p>
+          <p class="credit-note">Shared across MarketStream’s AI and Prime Automation. Unused included credits expire at the end of each billing period.</p>
         </div>
       </section>
     </div>

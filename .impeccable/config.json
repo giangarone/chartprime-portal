@@ -74,6 +74,15 @@
         ],
         "createdAt": "2026-11-16T13:20:40.338Z",
         "reason": "Assistant: the email verification page uses the same Inter typography as Account and Sign-in and security."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "auto-top-up-mockup.html"
+        ],
+        "createdAt": "2026-11-16T13:38:08.438Z",
+        "reason": "Assistant: Auto top-up uses the same Inter typography as the Account and Plans mockups."
       }
     ]
   }
