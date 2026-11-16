@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Plans | ChartPrime</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0c0c0c;
+      --surface: #151515;
+      --raised: #202020;
+      --border: #2b2b2b;
+      --divider: #272727;
+      --text: #f4f4f4;
+      --secondary: #b9b9b9;
+      --muted: #a0a0a0;
+      --accent: #cec2ff;
+      --success: #7ce1b0;
+      --success-surface: #1d3128;
+      --card-radius: 14px;
+      --control-radius: 8px;
+      --page-gutter: clamp(20px, 4.2vw, 64px);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 100%;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, p, ul { margin: 0; }
+    ul { padding: 0; list-style: none; }
+    a { color: inherit; }
+    button { appearance: none; font: inherit; color: inherit; cursor: pointer; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--background);
+    }
+
+    .page-width {
+      width: min(100% - var(--page-gutter) * 2, 1320px);
+      margin-inline: auto;
+    }
+
+    .site-header { border-bottom: 1px solid var(--divider); }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 44px;
+      min-height: 67px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      flex: none;
+      border-radius: 4px;
+    }
+
+    .brand img {
+      display: block;
+      width: 150px;
+      height: auto;
+    }
+
+    .navigation {
+      display: flex;
+      align-self: stretch;
+      gap: 24px;
+    }
+
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover, .nav-item[aria-current] { color: var(--text); }
+    .nav-item[aria-current] { font-weight: 600; }
+
+    .nav-item[aria-current]::after {
+      content: "";
+      position: absolute;
+      inset: auto 6px -1px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .account-button {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-left: auto;
+      padding: 3px 4px;
+      border: 0;
+      border-radius: var(--control-radius);
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .account-button:hover .avatar { background: var(--raised); }
+
+    .chevron {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      flex: none;
+      border: solid currentColor;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(-45deg);
+    }
+
+    .chevron-down { transform: translateY(-2px) rotate(45deg); }
+
+    main { padding-block: 44px 52px; }
+
+    .page-intro { margin-bottom: 25px; }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 650;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+    }
+
+    .page-intro p {
+      margin-top: 9px;
+      color: var(--secondary);
+    }
+
+    .product-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .product-tab {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 13px;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: var(--control-radius);
+      background: transparent;
+      color: var(--secondary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .product-tab:hover { background: var(--surface); color: var(--text); }
+
+    .product-tab[aria-selected="true"] {
+      border-color: var(--border);
+      background: var(--raised);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .product-tab img {
+      display: block;
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      margin-block: 24px 15px;
+    }
+
+    .panel-heading h2 {
+      font-size: 1.1875rem;
+      font-weight: 650;
+      letter-spacing: -0.025em;
+    }
+
+    .panel-heading p {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .billing-cycle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px;
+      border: 1px solid var(--border);
+      border-radius: var(--control-radius);
+      background: var(--surface);
+    }
+
+    .billing-period {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 10px;
+      gap: 6px;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--secondary);
+      font-size: 0.8125rem;
+      font-weight: 550;
+    }
+
+    .billing-period[aria-pressed="true"] {
+      background: #303030;
+      color: var(--text);
+    }
+
+    .billing-period[aria-pressed="false"]:hover { color: var(--text); }
+
+    .billing-savings {
+      color: var(--success);
+      font-size: 0.6875rem;
+      white-space: nowrap;
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .plan-card, .free-strip, .credit-panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--surface);
+    }
+
+    .plan-card.is-current { border-color: #535353; }
+
+    .plan-card-header {
+      padding: 18px 18px 16px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .plan-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px 8px;
+      min-height: 27px;
+    }
+
+    .plan-title h3 {
+      font-size: 1.0625rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .current-tag {
+      padding: 3px 7px;
+      border-radius: 5px;
+      background: var(--success-surface);
+      color: var(--success);
+      font-size: 0.6875rem;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .plan-price {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px;
+      margin-block: 8px 14px;
+      line-height: 1.15;
+    }
+
+    .plan-amount {
+      font-size: 2rem;
+      font-weight: 640;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .price-period {
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .plan-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 37px;
+      padding: 6px 12px;
+      border: 1px solid #414141;
+      border-radius: var(--control-radius);
+      background: transparent;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .plan-button:hover { background: var(--raised); }
+
+    .plan-button-primary {
+      border-color: var(--text);
+      background: var(--text);
+      color: var(--surface);
+    }
+
+    .plan-button-primary:hover {
+      border-color: #dcdcdc;
+      background: #dcdcdc;
+    }
+
+    .plan-button-status {
+      border-color: var(--border);
+      color: var(--muted);
+    }
+
+    .plan-button-status:hover { background: transparent; }
+
+    .plan-features { padding: 16px 18px 18px; }
+
+    .feature-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      color: var(--secondary);
+      line-height: 1.35;
+    }
+
+    .feature-list li::before {
+      content: "";
+      width: 9px;
+      height: 5px;
+      flex: none;
+      border: solid var(--muted);
+      border-width: 0 0 1.5px 1.5px;
+      transform: translateY(-3px) rotate(-45deg);
+    }
+
+    .feature-list strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .feature-group {
+      margin-block: 12px 5px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .feature-list-upcoming li::before {
+      width: 7px;
+      height: 7px;
+      margin-inline: 1px;
+      border: 1px solid var(--muted);
+      border-radius: 50%;
+      transform: translateY(-1px);
+    }
+
+    .free-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px 16px;
+      margin-top: 12px;
+      padding: 12px 18px;
+    }
+
+    .free-strip-details {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+    }
+
+    .free-strip h3 {
+      font-size: 0.875rem;
+      font-weight: 650;
+    }
+
+    .free-strip p { color: var(--muted); }
+    .free-strip-price { color: var(--muted); white-space: nowrap; }
+    .free-strip-price strong { color: var(--text); font-weight: 650; }
+
+    .credit-icon {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      flex: none;
+      color: var(--secondary);
+    }
+
+    .credit-icon::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border: 1.5px solid currentColor;
+      border-radius: 2px;
+      transform: rotate(45deg);
+    }
+
+    .credit-panel {
+      max-width: 760px;
+      padding: 4px 18px;
+    }
+
+    .credit-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .credit-table tr:not(:last-child),
+    .credit-table thead tr {
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .credit-table th, .credit-table td { padding: 10px 10px 10px 0; }
+
+    .credit-table thead th {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      font-weight: 550;
+    }
+
+    .credit-table tbody th { font-weight: 600; }
+
+    .credit-table th:last-child, .credit-table td:last-child {
+      width: 1%;
+      padding-right: 0;
+      text-align: right;
+    }
+
+    .credit-table .plan-button { width: auto; white-space: nowrap; }
+
+    .plan-help {
+      margin-top: 28px;
+      padding-top: 21px;
+      border-top: 1px solid var(--divider);
+    }
+
+    .plan-help h2 {
+      margin-bottom: 11px;
+      font-size: 1rem;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+
+    .policy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .policy-grid h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .policy-grid p {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .help-contact {
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .plan-help section:not([hidden]) + .help-contact { margin-top: 17px; }
+
+    .help-contact a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 66rem) {
+      .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 41rem) {
+      .header-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 12px;
+        row-gap: 0;
+        min-height: 0;
+        padding-top: 10px;
+      }
+
+      .brand { justify-self: start; }
+      .brand img { width: 137px; }
+      .account-button { grid-area: 1 / 2; }
+      .navigation {
+        grid-column: 1 / -1;
+        gap: clamp(14px, 5vw, 28px);
+        min-height: 46px;
+      }
+
+      .nav-item { padding-inline: 2px; }
+      .nav-item[aria-current]::after { inset-inline: 2px; }
+      main { padding-block: 30px 42px; }
+      h1 { font-size: 1.875rem; }
+      .page-intro { margin-bottom: 18px; }
+      .product-tabs { gap: 3px; }
+      .product-tab { padding-inline: 8px; font-size: 0.8125rem; }
+      .product-tab img, .credit-icon { width: 16px; height: 16px; }
+      .panel-heading { margin-top: 18px; }
+      .policy-grid { grid-template-columns: minmax(0, 1fr); gap: 11px; }
+    }
+
+    @media (max-width: 36rem) {
+      .plan-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 30rem) {
+      .product-tabs { flex-wrap: nowrap; gap: 2px; }
+      .product-tab { flex: 1 0 auto; padding-inline: 4px; }
+      .product-tab img, .credit-icon { display: none; }
+    }
+
+    @media (max-width: 23rem) {
+      .credit-panel { padding-inline: 10px; }
+      .credit-table .plan-button { padding-inline: 8px; }
+    }
+  </style>
+</head>
+<body id="top">
+  <!-- Visual design reference. Product tabs switch views. Billing, plan, and purchase controls show the monthly preview. -->
+  <header class="site-header">
+    <div class="page-width header-content">
+      <a class="brand" href="overview-mockup.html">
+        <img src="data:image/webp;base64,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" alt="ChartPrime" width="304" height="48">
+      </a>
+      <nav class="navigation" aria-label="Portal">
+        <a class="nav-item" href="overview-mockup.html">Overview</a>
+        <a class="nav-item" href="#top" aria-current="page">Plans</a>
+        <button class="nav-item" type="button">Billing</button>
+        <button class="nav-item" type="button">Account</button>
+      </nav>
+      <button class="account-button" type="button" aria-label="Gian’s account menu">
+        <span class="avatar" aria-hidden="true">GG</span>
+        <span class="chevron chevron-down" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page-width">
+    <header class="page-intro">
+      <h1>Plans</h1>
+      <p>Choose a plan for each product. Change or cancel anytime.</p>
+    </header>
+
+    <div class="product-tabs" role="tablist" aria-label="Products">
+      <button class="product-tab" type="button" role="tab" id="marketstream-tab"
+        aria-selected="true" aria-controls="marketstream-panel" data-product="marketstream">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDE5MjcgMTM2OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxuczphZmZpbml0eT0iaHR0cHM6Ly93d3cuYWZmaW5pdHkuc3R1ZGlvLyIgc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDoyOyI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC0yMDc5NC44NzU4NjgsLTY2MzQ0LjY1NDYzMykiPgogICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDMuNjc3NTMsMCwwLDMuNjc3NTMsMTk3NzIuMDg4ODY1LDY1MDQzLjA3MTE0MikiPgogICAgICAgICAgICA8cGF0aCBkPSJNNDY0LjI2Niw2MTcuMTE2QzQ0Ny40ODEsNTc2LjgzIDQxOS42MzEsNTQxLjA1NyAzODMuODY2LDUxMi4wNkwzODMuODY2LDcyNi4wNzFMMzI2LjQxOCw3MjYuMDcxQzI5OS43NDIsNzI2LjA3MSAyNzguMTE4LDcwNC40NDcgMjc4LjExOCw2NzcuNzcyTDI3OC4xMTgsMzkzLjY4M0MyNzguMTE4LDM4MS43NjYgMjgzLjk3OCwzNzAuNjEyIDI5My43OTEsMzYzLjg1MkMzMDMuNjA0LDM1Ny4wOTEgMzE2LjEyNywzNTUuNTU2IDMyNy4yNDksMzU5LjgzNUMzNDYuOTM2LDM2Ny40MDkgMzY1Ljg0LDM3Ni4yMjMgMzgzLjg2NiwzODYuMDkyQzQzOC43Myw0MTYuMTMgNDg1LjI0Miw0NTYuNDg2IDUxOS45NCw1MDMuODMzQzUyNS4yNTcsNTExLjA4OCA1MzAuMjk3LDUxOC41MDggNTM1LjA0Nyw1MjYuMDhDNTY4LjgwNSw1NzkuODk1IDU4Ny45MjEsNjQxLjM5OCA1ODcuOTIxLDcwNi4yOTJDNTg3LjkyMSw3MTcuMjE2IDU3OS4wNjYsNzI2LjA3MSA1NjguMTQyLDcyNi4wNzFMNTAxLjk1Miw3MjYuMDcxQzQ5Ni43MDYsNzI2LjA3MSA0OTEuNjc1LDcyMy45ODggNDg3Ljk2Niw3MjAuMjc4QzQ4NC4yNTcsNzE2LjU2OSA0ODIuMTczLDcxMS41MzggNDgyLjE3Myw3MDYuMjkyQzQ4Mi4xNzMsNjc0LjkxMSA0NzUuODU4LDY0NC45MzggNDY0LjI2Niw2MTcuMTE2WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMSk7Ii8+CiAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0ibWF0cml4KDUuNTU1NTk0LDAsMCw1LjU1NTU5NCwtMTA0OC4yMTU5MywtMzU0Ni43NzU3MzQpIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0zMTMuOTgxLDcyOS4xOThDMzAyLjA2Myw3MzguMDk1IDI5NC41MDMsNzUwLjk3OSAyOTQuNTAzLDc2NS41NDdDMjk0LjUwMyw3NjYuNzQgMjk0LjQ2Nyw3NjcuOTI3IDI5NC4zOTYsNzY5LjEwN0wyNzUuNTc1LDc2OS4xMDdDMjc1LjUwNCw3NjcuOTI3IDI3NS40NjgsNzY2Ljc0IDI3NS40NjgsNzY1LjU0N0MyNzUuNDY4LDc1My44NjYgMjc4LjkwOSw3NDIuNzk2IDI4NC45ODUsNzMzLjEwOUMyOTEuNzUyLDcyMi4zMjEgMzAxLjc4OCw3MTMuMjUgMzEzLjk4MSw3MDYuOTY0QzMxNy4yOCw3MDUuMjYzIDMyMC43MzYsNzAzLjc2NSAzMjQuMzI5LDcwMi40OTRDMzI2LjMxOSw3MDEuNzkgMzI4LjUyNiw3MDIuMDk3IDMzMC4yNDgsNzAzLjMxNUMzMzEuOTcxLDcwNC41MzQgMzMyLjk5NSw3MDYuNTEyIDMzMi45OTUsNzA4LjYyMkMzMzMuMDE1LDcxMy45MDMgMzMzLjAxNSw3MTkuNjMzIDMzMy4wMTUsNzE5LjYzM0MzMzMuMDEyLDcxOS42MzMgMzMzLjAwOSw3MTkuNjM0IDMzMy4wMDYsNzE5LjYzNUMzMzMuMDE1LDczMy4wODUgMzMzLjAxNSw3NTAuMjQzIDMzMy4wMTUsNzYwLjQxM0MzMzMuMDE1LDc2NS4yMTUgMzI5LjEyMyw3NjkuMTA3IDMyNC4zMjEsNzY5LjEwN0wzMTMuOTgxLDc2OS4xMDdMMzEzLjk4MSw3MjkuMTk4WiIgc3R5bGU9ImZpbGw6dXJsKCNfTGluZWFyMik7Ii8+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS41MTA2ODYsMCwwLDEuNTEwNjg2LC04NDUxLjIyNzkyNCwtOTQwMDcuOTI4NzEyKSI+CiAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNTkwMS42MTksNjI2MzcuMTM0QzU5MDcuNTc4LDYyNjE1LjkwNyA1OTE2LjY3NCw2MjU5NS42ODEgNTkyOC40NzMsNjI1NzYuODczQzU5MzEuNjE3LDYyNTcxLjg2IDU5MzQuOTUzLDYyNTY2Ljk0OSA1OTM4LjQ3Myw2MjU2Mi4xNDZDNTk0MS45OTMsNjI1NjYuOTQ5IDU5NDUuMzI5LDYyNTcxLjg2IDU5NDguNDczLDYyNTc2Ljg3M0M1OTI2LjEyNiw2MjYxMi40OTYgNTkxMy40NzMsNjI2NTMuMjA4IDU5MTMuNDczLDYyNjk2LjE2NEM1OTEzLjQ3Myw2MjY3NS4zOTIgNTkwOS4yOTMsNjI2NTUuNTUxIDU5MDEuNjE5LDYyNjM3LjEzNFoiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4xOyIvPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJfTGluZWFyMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDI1Ni45MjkxMDMsMCwwLDI1Ni45MjkxMDMsMjc4LjExNzg4Nyw0ODEuNDYxNjk1KSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMjU0LDIwOCw1KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIxMCw3NCwxMzkpO3N0b3Atb3BhY2l0eToxIi8+PC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il9MaW5lYXIyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoLTQxLjQzMjY1MiwwLC0wLC00MS40MzI2NTIsMzMzLjAxNTM0NSw3MjQuMjgyMjMxKSI+PHN0b3Agb2Zmc2V0PSIwIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2IoMTI3LDUsMjU0KTtzdG9wLW9wYWNpdHk6MSIvPjxzdG9wIG9mZnNldD0iMSIgc3R5bGU9InN0b3AtY29sb3I6cmdiKDIzNSwxMDUsMTQ3KTtzdG9wLW9wYWNpdHk6MSIvPjwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+Cjwvc3ZnPgo=" width="18" height="18" alt="">
+        MarketStream
+      </button>
+      <button class="product-tab" type="button" role="tab" id="automation-tab"
+        aria-selected="false" aria-controls="automation-panel" data-product="prime-automation" tabindex="-1">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjgiIHZpZXdCb3g9IjAgMCAzMCAyOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI4Ljk3NiAyNC4yMTc5QzI3LjU3NiAyNi42Mzg1IDI1LjAyOTggMjcuOTk0OSAyMi40MTcgMjcuOTk0OUMyMi4yMTcgMjcuOTk0OSAyMi4wMjIxIDI3Ljk4NzIgMjEuODIyMSAyNy45NzE4QzIwLjczNDkgMjcuODg0NiAxOS42NTAzIDI3LjU2NDEgMTguNjUwMyAyNi45ODQ2SDE4LjY0NzdMMTYuODExOCAyNS45MjA1TDIwLjA3ODUgMjQuMDMzM0wyMC4yODM2IDI0LjE1MTNDMjAuOTk2NSAyNC41NjQxIDIxLjc4MzcgMjQuNzQ2MiAyMi41NTI5IDI0LjcyMDVDMjMuOTkxNCAyNC42Nzk1IDI1LjM3NiAyMy45MTI4IDI2LjE0NTIgMjIuNTgyMUMyNi45MTQ1IDIxLjI0ODcgMjYuODgzNyAxOS42NjQxIDI2LjIwMTYgMTguNEMyNS44NDAxIDE3LjcyMDUgMjUuMjg4OCAxNy4xMzA4IDI0LjU3MzQgMTYuNzE3OUwyMy41Nzg1IDE2LjE0MzZMMjIuNTUyOSAxNS41NDg3TDE5LjI4NjIgMTMuNjY0MUwxNC45OTY0IDExLjE4NzJMMTIuNDg2MSA5Ljc0MTAzVjcuNTU2NDFDMTIuNDg2MSA3LjA4OTc0IDEyLjYxNDMgNi42Mzg0NiAxMi44NTc5IDYuMjQ2MTVDMTIuODcwOCA2LjIyODIxIDEyLjg3ODUgNi4yMTAyNiAxMi44OTEzIDYuMTk0ODdMMTQuOTk2NCA3LjQxMjgyTDE3LjUwNDEgOC44NTg5N0wxOC4yNjU3IDkuMjk3NDRMMTguMzk2NCA5LjM3MThMMTkuMjg4OCA5Ljg4OTc0TDIyLjU1NTUgMTEuNzc2OUwyMy40NDc4IDEyLjI4OTdMMjQuMzQwMSAxMi44MDc3TDI2LjIwOTMgMTMuODg3MkgyNi4yMTE5QzI3LjIxOTYgMTQuNDY2NyAyOC4wNDAxIDE1LjI0MzYgMjguNjU4MSAxNi4xNDYyQzMwLjI1NTUgMTguNDcxOCAzMC40ODYzIDIxLjYxMDMgMjguOTgxMSAyNC4yMTU0TDI4Ljk3NiAyNC4yMTc5Wk0yNC42MjczIDE5LjIzODVDMjQuNDE0NCAxOC44MzA4IDI0LjA4NjIgMTguNDk0OSAyMy42ODM3IDE4LjI2NDFMMjIuNjg2MiAxNy42ODcyTDIxLjc5OSAxNy4xNzQ0TDE5LjI4ODggMTguNjIwNUwxNC45OTkgMjEuMDk3NEwxMS43MjcyIDIyLjk4NDZMMTAuNzA0MSAyMy41NzY5TDkuNzA2NjMgMjQuMTUzOEM5LjYyNDU4IDI0LjIwMjYgOS41Mzk5NiAyNC4yNDYyIDkuNDU1MzUgMjQuMjg3MkM5LjI4NjEyIDI0LjM3NDQgOS4xMTQzMiAyNC40NDM2IDguOTM0ODMgMjQuNTA1MUM4Ljg1NTM0IDI0LjUzMDggOC43NzA3MyAyNC41NTkgOC42OTEyNCAyNC41Nzk1QzguNjgzNTUgMjQuNTgyMSA4LjY3NTg1IDI0LjU4NDYgOC42NjgxNiAyNC41ODcyQzguNTg4NjcgMjQuNjA3NyA4LjUwNjYyIDI0LjYyNTYgOC40MjcxMyAyNC42NDM2QzguNDE0MzEgMjQuNjQ2MiA4LjQwNjYyIDI0LjY0ODcgOC4zOTYzNiAyNC42NDg3QzguMDgwOTggMjQuNzEwMyA3Ljc2MDQ2IDI0LjczODUgNy40MzczOCAyNC43MjgyQzcuMTA2NjEgMjQuNzIwNSA2Ljc3ODQgMjQuNjY5MiA2LjQ1MDIgMjQuNTgyMUM1LjM0MjQ5IDI0LjI4NDYgNC40MTk0MSAyMy41NzQ0IDMuODQ1MDUgMjIuNTgyMUMzLjA3NTgxIDIxLjI0ODcgMy4xMDY1OCAxOS42NjQxIDMuNzg4NjQgMTguNEM0LjE1MDE4IDE3LjcyMDUgNC43MDE0NiAxNy4xMzA4IDUuNDE2ODUgMTYuNzE3OUw1LjYyMTk4IDE2LjZWMTIuODMwOEwzLjc4MzUxIDEzLjg5MjNDMi43OTM3NiAxNC40NjE1IDEuOTY1NTQgMTUuMjMzMyAxLjMzNDc3IDE2LjE0MzZDMC44NTAxNDkgMTYuODQzNiAwLjQ4NjA0NCAxNy42MzA4IDAuMjYwNDAxIDE4LjQ4MjFDLTAuMjYyNjggMjAuNDMwOCAwLjAwOTExNjkgMjIuNDY5MiAxLjAxNDI1IDI0LjIxNzlDMi4wMjQ1MiAyNS45NjQxIDMuNjU1MyAyNy4yMTU0IDUuNjA0MDMgMjcuNzM4NUM2LjI1Nzg5IDI3LjkxMjggNi45MTY4NyAyOCA3LjU3MzI4IDI4QzcuNzczMjggMjggNy45NjgxNiAyNy45OTIzIDguMTY4MTYgMjcuOTc2OUM5LjI3MzMgMjcuODg3MiAxMC4zNTI4IDI3LjU1MzggMTEuMzQgMjYuOTg0NkgxMS4zNDUxTDEzLjIxNDQgMjUuOTAyNkwxNC4xMDY3IDI1LjM4NDZMMTQuOTk5IDI0Ljg3MThMMTguMjY1NyAyMi45ODQ2TDE5LjE1MjkgMjIuNDcxOEwxOS4yODYyIDIyLjM5NDlMMjAuMDQ3NyAyMS45NTY0TDIyLjU1NTUgMjAuNTEwM0wyNC42NTggMTkuMjk0OUMyNC42NDUyIDE5LjI3NjkgMjQuNjM3NSAxOS4yNTkgMjQuNjI3MyAxOS4yNDFWMTkuMjM4NVpNOC4zOTM4IDI0LjY0ODdDOC4zMzIyNiAyNC42NTY0IDguMjcwNzIgMjQuNjY5MiA4LjIwOTE4IDI0LjY3OTVDOC4yNzA3MiAyNC42NzE4IDguMzMyMjYgMjQuNjYxNSA4LjM5MzggMjQuNjQ4N1pNOC40MjQ1NyAyNC42NDM2QzguNTA0MDYgMjQuNjI1NiA4LjU4NjExIDI0LjYwNzcgOC42NjU2IDI0LjU4NzJDOC41NzU4NSAyNC42MDc3IDguNDgzNTQgMjQuNjI4MiA4LjM5NjM2IDI0LjY0NjJDOC40MDQwNiAyNC42NDYyIDguNDE2ODggMjQuNjQzNiA4LjQyNzEzIDI0LjY0MzZIOC40MjQ1N1pNOS40NTI3OCAyNC4yODcyQzkuMjgzNTUgMjQuMzY5MiA5LjExMTc1IDI0LjQ0MSA4LjkzMjI3IDI0LjUwNTFDOS4xMTE3NSAyNC40NDYyIDkuMjgzNTUgMjQuMzc0NCA5LjQ1Mjc4IDI0LjI4NzJaTTIxLjgyMjEgNC4zMjA1MUMyMC42MDY3IDEuNzY2NjcgMTguMDA0MSAwIDE0Ljk5MzkgMEMxMS45ODM2IDAgOS4zODA5OSAxLjc2NjY3IDguMTYzMDMgNC4zMTUzOEM3LjY5MzggNS4zIDcuNDMyMjUgNi40IDcuNDMyMjUgNy41NTg5N1YyMi45NDFDNy40NTAyIDIyLjk0MzYgNy40NjgxNSAyMi45NDM2IDcuNDg2MSAyMi45NDM2SDcuNTYwNDZDNy45OTg5MyAyMi45NDM2IDguNDE5NDQgMjIuODMwOCA4LjgxMTc1IDIyLjYwNTFMOS44MDY2MyAyMi4wMjgyTDEwLjcwMTUgMjEuNTEwM1Y3LjU2MTU0QzEwLjcwMTUgNi43MzU5IDEwLjkzNzQgNS45NjQxIDExLjM0MjUgNS4zMTAyNkMxMi4wOTY0IDQuMDg3MTggMTMuNDUyOCAzLjI2OTIzIDE0Ljk5MzkgMy4yNjkyM0MxNi41MzQ5IDMuMjY5MjMgMTcuODg2MiA0LjA4NzE4IDE4LjY0NTIgNS4zMTAyNkMxOS4wNTAzIDUuOTY0MSAxOS4yODM2IDYuNzM1OSAxOS4yODM2IDcuNTYxNTRWNy44TDIyLjU1MDMgOS42ODcxOFY3LjU2NDFDMjIuNTUwMyA2LjQwNTEzIDIyLjI4ODggNS4zMDUxMyAyMS44MTk2IDQuMzIzMDhMMjEuODIyMSA0LjMyMDUxWiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzExNTIxXzM1OTMpIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMTE1MjFfMzU5MyIgeDE9Ii0xLjc1MzQxZS0wNyIgeTE9IjEzLjE2NTMiIHgyPSIyOS45OTIzIiB5Mj0iMTMuMTY1MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjU1N0ZGIi8+CjxzdG9wIG9mZnNldD0iMC4zMyIgc3RvcC1jb2xvcj0iI0FBM0ZGRiIvPgo8c3RvcCBvZmZzZXQ9IjAuNjYiIHN0b3AtY29sb3I9IiNGQ0FBNEEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjg1MjJFIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==" width="18" height="18" alt="">
+        Prime Automation
+      </button>
+      <button class="product-tab" type="button" role="tab" id="credits-tab"
+        aria-selected="false" aria-controls="credits-panel" data-product="ai-credits" tabindex="-1">
+        <span class="credit-icon" aria-hidden="true"></span>
+        AI credits
+      </button>
+    </div>
+
+    <section id="marketstream-panel" role="tabpanel" aria-labelledby="marketstream-tab">
+      <header class="panel-heading">
+        <div>
+          <h2>Compare MarketStream plans</h2>
+          <p>Your Elite plan renews <time datetime="2026-12-15">Dec 15, 2026</time>.</p>
+        </div>
+        <div class="billing-cycle" role="group" aria-label="Billing period">
+          <button class="billing-period" type="button" aria-pressed="true">Monthly</button>
+          <button class="billing-period" type="button" aria-pressed="false">
+            Yearly <span class="billing-savings">Save up to 50%</span>
+          </button>
+        </div>
+      </header>
+      <div class="plan-grid">
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Pro</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$67</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Pro">Switch plan</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li>ChartPrime Terminal</li>
+              <li>Core indicator suite</li>
+              <li>Real-time trade signals</li>
+              <li>Live strategy sessions</li>
+              <li>Daily market insights</li>
+              <li>Private trading community</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Plus</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$117</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Plus">Switch plan</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Pro</strong></li>
+              <li>Plus indicator suite</li>
+              <li>Influencer indicators</li>
+              <li>TA Plus classes</li>
+              <li>Custom signal builder</li>
+              <li>Early indicator access</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Ultra</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$149</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Switch plan · MarketStream Ultra">Switch plan</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Plus</strong></li>
+              <li>Real-time L1 market data</li>
+              <li>Dark Pool activity</li>
+              <li>Institutional print tracking</li>
+            </ul>
+            <p class="feature-group">Coming soon</p>
+            <ul class="feature-list feature-list-upcoming">
+              <li>High-impact news alerts</li>
+              <li>Trading Journal</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card is-current">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Elite</h3>
+              <span class="current-tag">Your plan</span>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$199</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Manage billing · MarketStream Elite">Manage billing</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Ultra</strong></li>
+              <li>Market context on your charts</li>
+              <li>Hidden order detection</li>
+              <li>AI trading assistant</li>
+              <li>Real-time L2 order book data</li>
+              <li>Real-time L3 / MBO data</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      <article class="free-strip">
+        <div class="free-strip-details">
+          <h3>MarketStream Free</h3>
+          <p>Charts on every market. Included with every account.</p>
+        </div>
+        <span class="free-strip-price"><strong>$0</strong> forever</span>
+      </article>
+    </section>
+
+    <section id="automation-panel" role="tabpanel" aria-labelledby="automation-tab" hidden>
+      <header class="panel-heading">
+        <div>
+          <h2>Compare Prime Automation plans</h2>
+          <p>Ready-made trading bots.</p>
+        </div>
+        <div class="billing-cycle" role="group" aria-label="Billing period">
+          <button class="billing-period" type="button" aria-pressed="true">Monthly</button>
+          <button class="billing-period" type="button" aria-pressed="false">
+            Yearly <span class="billing-savings">Save up to 50%</span>
+          </button>
+        </div>
+      </header>
+      <div class="plan-grid">
+        <article class="plan-card is-current">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Free</h3>
+              <span class="current-tag">Your plan</span>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$0</span><span class="price-period">forever</span></p>
+            <p class="plan-button plan-button-status">No card needed</p>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li>1 user-generated strategy</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Basic</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$87.59</span><span class="price-period">/ month</span></p>
+            <button class="plan-button plan-button-primary" type="button" aria-label="Upgrade · Prime Automation Basic">Upgrade</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Free</strong></li>
+              <li>6 user-generated strategies</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Pro</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$119.99</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Upgrade · Prime Automation Pro">Upgrade</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Basic</strong></li>
+              <li>12 user-generated strategies</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="plan-card">
+          <header class="plan-card-header">
+            <div class="plan-title">
+              <h3>Builder</h3>
+            </div>
+            <p class="plan-price"><span class="plan-amount">$199</span><span class="price-period">/ month</span></p>
+            <button class="plan-button" type="button" aria-label="Upgrade · Prime Automation Builder">Upgrade</button>
+          </header>
+          <div class="plan-features">
+            <ul class="feature-list">
+              <li><strong>Everything in Pro</strong></li>
+              <li>400,000 monthly AI credits</li>
+              <li>Unlimited user-generated strategies</li>
+              <li>AI Strategy Builder</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="credits-panel" role="tabpanel" aria-labelledby="credits-tab" hidden>
+      <header class="panel-heading">
+        <div>
+          <h2>Buy AI credits</h2>
+          <p>One balance across ChartPrime apps. Credits never expire.</p>
+        </div>
+      </header>
+      <div class="credit-panel">
+        <table class="credit-table" aria-label="AI credit packs">
+          <thead>
+            <tr>
+              <th scope="col">AI credits</th>
+              <th scope="col">One-time price</th>
+              <th scope="col">Purchase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1,000,000</th>
+              <td>$10</td>
+              <td><button class="plan-button" type="button" aria-label="Buy 1,000,000 AI credits for $10">Buy credits</button></td>
+            </tr>
+            <tr>
+              <th scope="row">2,500,000</th>
+              <td>$25</td>
+              <td><button class="plan-button" type="button" aria-label="Buy 2,500,000 AI credits for $25">Buy credits</button></td>
+            </tr>
+            <tr>
+              <th scope="row">5,000,000</th>
+              <td>$50</td>
+              <td><button class="plan-button" type="button" aria-label="Buy 5,000,000 AI credits for $50">Buy credits</button></td>
+            </tr>
+            <tr>
+              <th scope="row">10,000,000</th>
+              <td>$100</td>
+              <td><button class="plan-button" type="button" aria-label="Buy 10,000,000 AI credits for $100">Buy credits</button></td>
+            </tr>
+            <tr>
+              <th scope="row">50,000,000</th>
+              <td>$500</td>
+              <td><button class="plan-button" type="button" aria-label="Buy 50,000,000 AI credits for $500">Buy credits</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="plan-help">
+      <section id="plan-change-policy" aria-labelledby="plan-help-heading">
+        <h2 id="plan-help-heading">How changing plans works</h2>
+        <div class="policy-grid">
+          <div>
+            <h3>Starts right away</h3>
+            <p>Your new plan starts once payment goes through.</p>
+          </div>
+          <div>
+            <h3>Unused time carries over</h3>
+            <p>The value left on your current plan comes off what you pay today.</p>
+          </div>
+          <div>
+            <h3>One plan per product</h3>
+            <p>Your previous plan ends when the new one starts.</p>
+          </div>
+        </div>
+      </section>
+      <p class="help-contact">Questions about plans? <a href="mailto:support@chartprime.com">support@chartprime.com</a></p>
+    </footer>
+  </main>
+
+  <script>
+    const productTabs = Array.from(document.querySelectorAll('.product-tab'));
+    const planChangePolicy = document.getElementById('plan-change-policy');
+
+    function selectProduct(selectedTab, updateLocation = true) {
+      for (const tab of productTabs) {
+        const isSelected = tab === selectedTab;
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.tabIndex = isSelected ? 0 : -1;
+        document.getElementById(tab.getAttribute('aria-controls')).hidden = !isSelected;
+      }
+
+      planChangePolicy.hidden = selectedTab.id === 'credits-tab';
+
+      if (updateLocation) {
+        history.replaceState(null, '', '#' + selectedTab.dataset.product);
+      }
+    }
+
+    function selectProductFromLocation() {
+      const product = location.hash.slice(1);
+      const tab = productTabs.find(item => item.dataset.product === product);
+      selectProduct(tab ?? productTabs[0], false);
+    }
+
+    for (const tab of productTabs) {
+      tab.addEventListener('click', () => selectProduct(tab));
+      tab.addEventListener('keydown', event => {
+        const index = productTabs.indexOf(tab);
+        let nextIndex;
+
+        switch (event.key) {
+          case 'ArrowRight':
+            nextIndex = (index + 1) % productTabs.length;
+            break;
+          case 'ArrowLeft':
+            nextIndex = (index + productTabs.length - 1) % productTabs.length;
+            break;
+          case 'Home':
+            nextIndex = 0;
+            break;
+          case 'End':
+            nextIndex = productTabs.length - 1;
+            break;
+          default:
+            return;
+        }
+
+        event.preventDefault();
+        selectProduct(productTabs[nextIndex]);
+        productTabs[nextIndex].focus();
+      });
+    }
+
+    window.addEventListener('hashchange', selectProductFromLocation);
+    selectProductFromLocation();
+  </script>
+</body>
+</html>

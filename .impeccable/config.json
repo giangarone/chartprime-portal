@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-16T11:47:58.610Z",
         "reason": "Assistant: Inter is an intentional neutral UI face for this standalone overview mockup, where legibility and continuity with the supplied reference matter."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "plans-mockup.html"
+        ],
+        "createdAt": "2026-11-16T12:33:11.068Z",
+        "reason": "Assistant: the Plans mockup deliberately uses the existing Overview typography so both portal pages read as one interface."
       }
     ]
   }
