@@ -259,6 +259,18 @@
       width: 18px;
       height: 18px;
       object-fit: contain;
+      /* Solid silhouette ≈ --muted (#a0a0a0); full color only when selected */
+      filter: brightness(0) invert(0.63);
+    }
+
+    .product-tab:hover img {
+      /* Solid silhouette ≈ --text (#f4f4f4) on hover */
+      filter: brightness(0) invert(0.96);
+    }
+
+    .product-tab[aria-selected="true"] img,
+    .product-tab[aria-selected="true"]:hover img {
+      filter: none;
     }
 
     .panel-heading {
@@ -457,6 +469,14 @@
     .feature-list strong {
       color: var(--text);
       font-weight: 600;
+    }
+
+    .product-tab:not([aria-selected="true"]) .credit-icon {
+      color: var(--muted);
+    }
+
+    .product-tab:not([aria-selected="true"]):hover .credit-icon {
+      color: var(--text);
     }
 
     .credit-icon {
