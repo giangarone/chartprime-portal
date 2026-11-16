@@ -552,6 +552,9 @@
 
     .plan-help {
       margin-top: 28px;
+    }
+
+    .plan-help:has(section[hidden]) {
       padding-top: 21px;
       border-top: 1px solid var(--divider);
     }
@@ -566,7 +569,67 @@
     .policy-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--surface);
+    }
+
+    .policy-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 9px 14px 16px;
+    }
+
+    .policy-item + .policy-item { border-inline-start: 1px solid var(--divider); }
+
+    .policy-icon {
+      display: grid;
+      place-items: center;
+      width: 33px;
+      height: 33px;
+      flex: none;
+      border-radius: 8px;
+      background: var(--raised);
+      color: var(--secondary);
+    }
+
+    .activation-icon {
+      width: 17px;
+      height: 17px;
+      background: currentColor;
+      clip-path: polygon(58% 0, 18% 55%, 48% 55%, 39% 100%, 83% 38%, 53% 38%);
+    }
+
+    .credit-clock-icon, .active-plan-icon {
+      position: relative;
+      width: 15px;
+      height: 15px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .credit-clock-icon::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 4px;
+      height: 5px;
+      border: solid currentColor;
+      border-width: 0 0 1.5px 1.5px;
+    }
+
+    .active-plan-icon::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 2px;
+      width: 7px;
+      height: 4px;
+      border: solid currentColor;
+      border-width: 0 0 1.5px 1.5px;
+      transform: rotate(-45deg);
     }
 
     .policy-grid h3 {
@@ -595,6 +658,15 @@
 
     @media (max-width: 66rem) {
       .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 48rem) {
+      .policy-grid { grid-template-columns: minmax(0, 1fr); }
+
+      .policy-item + .policy-item {
+        border-top: 1px solid var(--divider);
+        border-inline-start: 0;
+      }
     }
 
     @media (max-width: 41rem) {
@@ -626,7 +698,6 @@
       .product-tab img, .credit-icon { width: 16px; height: 16px; }
       .panel-heading { margin-top: 18px; }
       .free-strip-pricing { text-align: start; }
-      .policy-grid { grid-template-columns: minmax(0, 1fr); gap: 11px; }
     }
 
     @media (max-width: 36rem) {
@@ -977,19 +1048,28 @@
 
     <footer class="plan-help">
       <section id="plan-change-policy" aria-labelledby="plan-help-heading">
-        <h2 id="plan-help-heading">How changing plans works</h2>
+        <h2 id="plan-help-heading">How plan changes work</h2>
         <div class="policy-grid">
-          <div>
-            <h3>Starts right away</h3>
-            <p>Your new plan starts once payment goes through.</p>
+          <div class="policy-item">
+            <span class="policy-icon" aria-hidden="true"><span class="activation-icon"></span></span>
+            <div>
+              <h3>Starts right away</h3>
+              <p>Your new plan starts after payment.</p>
+            </div>
           </div>
-          <div>
-            <h3>Unused time carries over</h3>
-            <p>The value left on your current plan comes off what you pay today.</p>
+          <div class="policy-item">
+            <span class="policy-icon" aria-hidden="true"><span class="credit-clock-icon"></span></span>
+            <div>
+              <h3>Credit for unused time</h3>
+              <p>Unused value goes toward today’s payment.</p>
+            </div>
           </div>
-          <div>
-            <h3>One plan per product</h3>
-            <p>Your previous plan ends when the new one starts.</p>
+          <div class="policy-item">
+            <span class="policy-icon" aria-hidden="true"><span class="active-plan-icon"></span></span>
+            <div>
+              <h3>One plan per product</h3>
+              <p>The new plan replaces your current plan.</p>
+            </div>
           </div>
         </div>
       </section>
