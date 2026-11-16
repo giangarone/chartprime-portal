@@ -241,7 +241,7 @@
       text-wrap: balance;
     }
 
-    .plan-rate {
+    .checkout-rate {
       margin-top: 8px;
       color: var(--secondary);
       font-variant-numeric: tabular-nums;
@@ -333,14 +333,55 @@
 
     .credit-note { color: var(--success); font-size: 0.8125rem; }
 
-    .next-charge {
+    .checkout-breakdown {
       margin-block: 16px;
       padding-block: 13px;
       border-block: 1px solid var(--divider);
     }
 
-    .next-charge time { display: block; color: var(--text); font-weight: 600; }
-    .next-charge dd { align-self: end; }
+    .checkout-breakdown time { display: block; color: var(--text); font-weight: 600; }
+    .checkout-breakdown dd { align-self: end; }
+
+    .payment-options {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .payment-options legend { padding: 0; }
+
+    .payment-option {
+      display: flex;
+      align-items: start;
+      gap: 11px;
+      margin-top: 10px;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--control-radius);
+      cursor: pointer;
+    }
+
+    .payment-option:first-of-type { margin-top: 14px; }
+    .payment-option:hover { background: var(--raised); }
+
+    .payment-option:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--raised);
+    }
+
+    .payment-option input {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      margin: 3px 0 0;
+      accent-color: var(--accent);
+      cursor: inherit;
+    }
+
+    .payment-option-title { display: block; font-weight: 650; }
+    .payment-option-description { display: block; margin-top: 2px; color: var(--secondary); }
+    .credit-purchase-note { margin-top: 14px; color: var(--muted); font-size: 0.8125rem; }
 
     .continue-button {
       display: flex;
@@ -440,13 +481,13 @@
 
   <main class="page-width">
     <a class="back-link" id="back-to-plans" href="plans-mockup.html">
-      <span class="chevron chevron-left" aria-hidden="true"></span> Back to Plans
+      <span class="chevron chevron-left" aria-hidden="true"></span> <span id="back-to-plans-label">Back to Plans</span>
     </a>
 
     <div id="plan-review" hidden>
       <header class="page-intro">
         <h1 id="review-heading"></h1>
-        <p class="plan-rate" id="new-plan-rate"></p>
+        <p class="checkout-rate" id="new-plan-rate"></p>
       </header>
 
       <div class="review-grid">
@@ -479,7 +520,7 @@
             <dd class="payment-amount" id="due-today"></dd>
           </dl>
           <p class="credit-note" id="credit-note"></p>
-          <dl class="next-charge">
+          <dl class="checkout-breakdown">
             <div class="detail-row">
               <dt class="detail-label"><span id="charge-label"></span><time id="charge-date"></time></dt>
               <dd id="renewal-rate"></dd>
@@ -492,104 +533,206 @@
       </div>
     </div>
 
+    <div id="credit-checkout" hidden>
+      <header class="page-intro">
+        <h1 id="credit-checkout-heading"></h1>
+        <p class="checkout-rate" id="credit-checkout-rate"></p>
+      </header>
+
+      <div class="review-grid">
+        <div class="panel">
+          <fieldset class="payment-options" id="credit-payment-options">
+            <legend class="section-title">Payment method</legend>
+            <label class="payment-option">
+              <input type="radio" name="credit-payment" value="card" id="credit-pay-by-card"
+                aria-labelledby="credit-card-title" aria-describedby="credit-card-description" checked>
+              <span>
+                <span class="payment-option-title" id="credit-card-title">Pay now by card</span>
+                <span class="payment-option-description" id="credit-card-description"></span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="credit-payment" value="pay-later"
+                aria-labelledby="credit-pay-later-title" aria-describedby="credit-pay-later-description">
+              <span>
+                <span class="payment-option-title" id="credit-pay-later-title">Buy now, pay later</span>
+                <span class="payment-option-description" id="credit-pay-later-description">Pay for your credit pack over time.</span>
+              </span>
+            </label>
+          </fieldset>
+          <p class="credit-purchase-note">Credits never expire. This purchase does not renew automatically.</p>
+        </div>
+
+        <section class="panel" aria-labelledby="credit-summary-heading">
+          <h2 class="section-title" id="credit-summary-heading">Purchase summary</h2>
+          <dl class="due-today" aria-live="polite">
+            <dt class="detail-label" id="credit-total-label"></dt>
+            <dd class="payment-amount" id="credit-total"></dd>
+          </dl>
+          <dl class="checkout-breakdown">
+            <div class="detail-row">
+              <dt class="detail-label">AI credits</dt>
+              <dd id="credit-quantity"></dd>
+            </div>
+          </dl>
+          <p class="checkout-copy" id="credit-payment-guidance"></p>
+          <button class="continue-button" type="button">Continue to payment</button>
+          <p class="security-note">Payment details are handled securely by the payment provider.</p>
+        </section>
+      </div>
+    </div>
+
     <header class="page-intro" id="unavailable-plan" hidden>
       <h1>Plan unavailable</h1>
       <p class="handoff-copy">Choose an available plan from Plans to review your switch.</p>
     </header>
+    <header class="page-intro" id="unavailable-credit-pack" hidden>
+      <h1>Credit pack unavailable</h1>
+      <p class="handoff-copy">Choose an available pack from the AI credits tab.</p>
+    </header>
     <noscript>
-      <p class="handoff-copy">Enable JavaScript to review your plan change.</p>
+      <p class="handoff-copy">Enable JavaScript to review your checkout.</p>
     </noscript>
   </main>
 
+  <script src="credit-packs.js"></script>
   <script>
-    // Sample subscription balances for the static portal mockup.
-    const daysRemaining = 29;
-    const quoteDate = Date.UTC(2026, 10, 16);
-    const products = {
-      marketstream: {
-        name: 'MarketStream',
-        current: 'elite',
-        credit: 19418,
-        logo: 'marketstream-logo.svg',
-        tiers: {
-          pro: { name: 'Pro', monthly: 6700, yearly: 48900 },
-          plus: { name: 'Plus', monthly: 11700, yearly: 70800 },
-          ultra: { name: 'Ultra', monthly: 14900, yearly: 142800 },
-          elite: { name: 'Elite', yearly: 202800 },
-        },
-      },
-      automation: {
-        name: 'Prime Automation',
-        current: 'basic',
-        credit: 8467,
-        logo: 'pa-logo.svg',
-        tiers: {
-          basic: { name: 'Basic', yearly: 52900 },
-          pro: { name: 'Pro', monthly: 11999, yearly: 71900 },
-          builder: { name: 'Builder', monthly: 19900, yearly: 119900 },
-        },
-      },
-    };
-
-    const money = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    });
-    const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' });
     const params = new URLSearchParams(location.search);
-    const [productKey, tierKey, extra] = (params.get('plan') ?? 'marketstream-plus').split('-');
-    const period = params.get('period') ?? 'monthly';
-    const product = Object.hasOwn(products, productKey) ? products[productKey] : null;
-    const tier = product && Object.hasOwn(product.tiers, tierKey) ? product.tiers[tierKey] : null;
-    const price = period === 'yearly' ? tier?.yearly : tier?.monthly;
     const backToPlans = document.getElementById('back-to-plans');
 
-    if (product) {
-      const tab = productKey === 'automation' ? 'prime-automation' : 'marketstream';
-      const query = period === 'yearly' ? '?period=yearly' : '';
-      backToPlans.href = 'plans-mockup.html' + query + '#' + tab;
-    }
+    function showCreditCheckout(pack) {
+      backToPlans.href = 'plans-mockup.html#ai-credits';
+      document.getElementById('back-to-plans-label').textContent = 'Back to AI credits';
 
-    if (extra !== undefined || !price || !['monthly', 'yearly'].includes(period)) {
-      document.getElementById('unavailable-plan').hidden = false;
-    } else {
-      const yearly = period === 'yearly';
-      const name = product.name + ' ' + tier.name;
-      const sameTier = tierKey === product.current;
-      const heading = sameTier ? 'Switch to yearly billing' : 'Switch to ' + name;
-      const rate = money.format(price / 100) + (yearly ? ' / year' : ' / month');
-      const due = Math.max(0, price - product.credit);
-      const chargeDate = new Date(quoteDate);
-
-      if (due === 0) {
-        const coveredDays = Math.floor(product.credit * (yearly ? 365 : 30) / price);
-        chargeDate.setUTCDate(chargeDate.getUTCDate() + coveredDays);
-        document.getElementById('credit-note').textContent = 'Your credit covers your first ' + coveredDays + ' days.';
-      } else {
-        if (yearly) chargeDate.setUTCFullYear(chargeDate.getUTCFullYear() + 1);
-        else chargeDate.setUTCMonth(chargeDate.getUTCMonth() + 1);
-        document.getElementById('credit-note').textContent =
-          'Your ' + money.format(product.credit / 100) + ' credit reduces today’s charge.';
+      const credits = Number(pack);
+      const price = creditPacks.get(credits);
+      if (price === undefined) {
+        document.title = 'Credit pack unavailable | ChartPrime';
+        document.getElementById('unavailable-credit-pack').hidden = false;
+        return;
       }
 
-      document.title = heading + ' | ChartPrime';
-      document.getElementById('review-heading').textContent = heading;
-      document.getElementById('new-plan-rate').textContent = sameTier ? name + ' · ' + rate : rate;
-      document.getElementById('current-plan').textContent = product.name + ' ' + product.tiers[product.current].name;
-      document.getElementById('product-logo').src = product.logo;
-      document.getElementById('time-remaining').textContent = daysRemaining + ' days';
-      document.getElementById('plan-credit').textContent = money.format(product.credit / 100);
-      document.getElementById('due-today').textContent = money.format(due / 100);
-      document.getElementById('charge-label').textContent = due === 0 ? 'First charge' : 'Next charge';
-      document.getElementById('renewal-rate').textContent = rate;
+      const quantity = new Intl.NumberFormat('en-US').format(credits);
+      const cost = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+      const heading = quantity + ' AI credits';
 
-      const chargeDateElement = document.getElementById('charge-date');
-      chargeDateElement.textContent = date.format(chargeDate);
-      chargeDateElement.dateTime = chargeDate.toISOString().slice(0, 10);
+      document.title = 'Buy ' + heading + ' | ChartPrime';
+      document.getElementById('credit-checkout-heading').textContent = heading;
+      document.getElementById('credit-checkout-rate').textContent = cost + ' · One-time purchase';
+      document.getElementById('credit-card-description').textContent = cost + ' today in one payment.';
+      document.getElementById('credit-total').textContent = cost;
+      document.getElementById('credit-quantity').textContent = quantity;
 
-      document.getElementById('plan-review').hidden = false;
+      const card = document.getElementById('credit-pay-by-card');
+      const totalLabel = document.getElementById('credit-total-label');
+      const guidance = document.getElementById('credit-payment-guidance');
+
+      function updatePaymentSummary() {
+        totalLabel.textContent = card.checked ? 'Due today' : 'Purchase total';
+        guidance.textContent = card.checked
+          ? 'Add your card at checkout.'
+          : 'See available payment schedules and terms at checkout.';
+      }
+
+      document.getElementById('credit-payment-options').addEventListener('change', updatePaymentSummary);
+      updatePaymentSummary();
+      document.getElementById('credit-checkout').hidden = false;
+    }
+
+    function showPlanReview() {
+      // Sample subscription balances for the static portal mockup.
+      const daysRemaining = 29;
+      const quoteDate = Date.UTC(2026, 10, 16);
+      const products = {
+        marketstream: {
+          name: 'MarketStream',
+          current: 'elite',
+          credit: 19418,
+          logo: 'marketstream-logo.svg',
+          tiers: {
+            pro: { name: 'Pro', monthly: 6700, yearly: 48900 },
+            plus: { name: 'Plus', monthly: 11700, yearly: 70800 },
+            ultra: { name: 'Ultra', monthly: 14900, yearly: 142800 },
+            elite: { name: 'Elite', yearly: 202800 },
+          },
+        },
+        automation: {
+          name: 'Prime Automation',
+          current: 'basic',
+          credit: 8467,
+          logo: 'pa-logo.svg',
+          tiers: {
+            basic: { name: 'Basic', yearly: 52900 },
+            pro: { name: 'Pro', monthly: 11999, yearly: 71900 },
+            builder: { name: 'Builder', monthly: 19900, yearly: 119900 },
+          },
+        },
+      };
+
+      const money = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+      const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' });
+      const [productKey, tierKey, extra] = (params.get('plan') ?? 'marketstream-plus').split('-');
+      const period = params.get('period') ?? 'monthly';
+      const product = Object.hasOwn(products, productKey) ? products[productKey] : null;
+      const tier = product && Object.hasOwn(product.tiers, tierKey) ? product.tiers[tierKey] : null;
+      const price = period === 'yearly' ? tier?.yearly : tier?.monthly;
+
+      if (product) {
+        const tab = productKey === 'automation' ? 'prime-automation' : 'marketstream';
+        const query = period === 'yearly' ? '?period=yearly' : '';
+        backToPlans.href = 'plans-mockup.html' + query + '#' + tab;
+      }
+
+      if (extra !== undefined || !price || !['monthly', 'yearly'].includes(period)) {
+        document.getElementById('unavailable-plan').hidden = false;
+      } else {
+        const yearly = period === 'yearly';
+        const name = product.name + ' ' + tier.name;
+        const sameTier = tierKey === product.current;
+        const heading = sameTier ? 'Switch to yearly billing' : 'Switch to ' + name;
+        const rate = money.format(price / 100) + (yearly ? ' / year' : ' / month');
+        const due = Math.max(0, price - product.credit);
+        const chargeDate = new Date(quoteDate);
+
+        if (due === 0) {
+          const coveredDays = Math.floor(product.credit * (yearly ? 365 : 30) / price);
+          chargeDate.setUTCDate(chargeDate.getUTCDate() + coveredDays);
+          document.getElementById('credit-note').textContent = 'Your credit covers your first ' + coveredDays + ' days.';
+        } else {
+          if (yearly) chargeDate.setUTCFullYear(chargeDate.getUTCFullYear() + 1);
+          else chargeDate.setUTCMonth(chargeDate.getUTCMonth() + 1);
+          document.getElementById('credit-note').textContent =
+            'Your ' + money.format(product.credit / 100) + ' credit reduces today’s charge.';
+        }
+
+        document.title = heading + ' | ChartPrime';
+        document.getElementById('review-heading').textContent = heading;
+        document.getElementById('new-plan-rate').textContent = sameTier ? name + ' · ' + rate : rate;
+        document.getElementById('current-plan').textContent = product.name + ' ' + product.tiers[product.current].name;
+        document.getElementById('product-logo').src = product.logo;
+        document.getElementById('time-remaining').textContent = daysRemaining + ' days';
+        document.getElementById('plan-credit').textContent = money.format(product.credit / 100);
+        document.getElementById('due-today').textContent = money.format(due / 100);
+        document.getElementById('charge-label').textContent = due === 0 ? 'First charge' : 'Next charge';
+        document.getElementById('renewal-rate').textContent = rate;
+
+        const chargeDateElement = document.getElementById('charge-date');
+        chargeDateElement.textContent = date.format(chargeDate);
+        chargeDateElement.dateTime = chargeDate.toISOString().slice(0, 10);
+
+        document.getElementById('plan-review').hidden = false;
+      }
+    }
+
+    if (params.has('credits')) {
+      showCreditCheckout(params.get('credits'));
+    } else {
+      showPlanReview();
     }
   </script>
   <script>

@@ -712,7 +712,7 @@
   </style>
 </head>
 <body id="top">
-  <!-- Visual design reference. Product tabs and billing periods switch views. Plan and purchase actions are placeholders. -->
+  <!-- Visual design reference. Plan changes and credit purchases open checkout mockups. -->
   <header class="site-header">
     <div class="page-width header-content">
       <a class="brand" href="overview-mockup.html">
@@ -1014,33 +1014,7 @@
               <th scope="col">Purchase</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1,000,000</th>
-              <td>$10</td>
-              <td><button class="plan-button" type="button" aria-label="Buy 1,000,000 AI credits for $10">Buy credits</button></td>
-            </tr>
-            <tr>
-              <th scope="row">2,500,000</th>
-              <td>$25</td>
-              <td><button class="plan-button" type="button" aria-label="Buy 2,500,000 AI credits for $25">Buy credits</button></td>
-            </tr>
-            <tr>
-              <th scope="row">5,000,000</th>
-              <td>$50</td>
-              <td><button class="plan-button" type="button" aria-label="Buy 5,000,000 AI credits for $50">Buy credits</button></td>
-            </tr>
-            <tr>
-              <th scope="row">10,000,000</th>
-              <td>$100</td>
-              <td><button class="plan-button" type="button" aria-label="Buy 10,000,000 AI credits for $100">Buy credits</button></td>
-            </tr>
-            <tr>
-              <th scope="row">50,000,000</th>
-              <td>$500</td>
-              <td><button class="plan-button" type="button" aria-label="Buy 50,000,000 AI credits for $500">Buy credits</button></td>
-            </tr>
-          </tbody>
+          <tbody id="credit-pack-rows"></tbody>
         </table>
       </div>
     </section>
@@ -1076,6 +1050,15 @@
     </footer>
   </main>
 
+  <template id="credit-pack-row">
+    <tr>
+      <th scope="row"></th>
+      <td data-pack-price></td>
+      <td><a class="plan-button">Buy credits</a></td>
+    </tr>
+  </template>
+
+  <script src="credit-packs.js"></script>
   <script>
     const productTabs = Array.from(document.querySelectorAll('.product-tab'));
     const planChangePolicy = document.getElementById('plan-change-policy');
@@ -1139,6 +1122,23 @@
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
+
+    const creditCount = new Intl.NumberFormat('en-US');
+    const creditRows = document.getElementById('credit-pack-rows');
+    const creditRow = document.getElementById('credit-pack-row');
+
+    for (const [credits, price] of creditPacks) {
+      const row = creditRow.content.cloneNode(true);
+      const amount = creditCount.format(credits);
+      const cost = currency.format(price);
+      const purchase = row.querySelector('a');
+
+      row.querySelector('th').textContent = amount;
+      row.querySelector('[data-pack-price]').textContent = cost;
+      purchase.href = 'switch-plan-mockup.html?credits=' + credits;
+      purchase.setAttribute('aria-label', 'Buy ' + amount + ' AI credits for ' + cost);
+      creditRows.append(row);
+    }
 
     const returningToYearly = new URLSearchParams(location.search).get('period') === 'yearly';
 
