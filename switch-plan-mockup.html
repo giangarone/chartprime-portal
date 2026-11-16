@@ -370,7 +370,6 @@
     }
 
     .handoff-copy { margin-top: 9px; color: var(--secondary); }
-    .handoff-copy + .back-link { margin-top: 12px; }
 
     @media (max-width: 46rem) {
       .review-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
@@ -473,7 +472,7 @@
           <p class="summary-note">Your current plan ends when your new plan starts and won’t renew.</p>
         </section>
 
-        <section class="panel" aria-labelledby="payment-heading" id="payment-review">
+        <section class="panel" aria-labelledby="payment-heading">
           <h2 class="section-title" id="payment-heading">Payment</h2>
           <dl class="due-today">
             <dt class="detail-label">Due today</dt>
@@ -487,16 +486,8 @@
             </div>
           </dl>
           <p class="checkout-copy">Add your card at checkout to start your new plan.</p>
-          <a class="continue-button" id="continue-to-payment" href="#checkout">Continue to payment</a>
+          <button class="continue-button" type="button">Continue to payment</button>
           <p class="security-note">Card details are handled securely by the payment provider.</p>
-        </section>
-
-        <section class="panel" id="checkout-preview" aria-labelledby="checkout-heading" hidden>
-          <h2 class="section-title" id="checkout-heading" tabindex="-1">Checkout preview</h2>
-          <p class="handoff-copy">In the live portal, the payment provider opens here so you can add your card and complete the switch.</p>
-          <a class="back-link" id="back-to-review" href="#review">
-            <span class="chevron chevron-left" aria-hidden="true"></span> Back to review
-          </a>
         </section>
       </div>
     </div>
@@ -598,23 +589,7 @@
       chargeDateElement.textContent = date.format(chargeDate);
       chargeDateElement.dateTime = chargeDate.toISOString().slice(0, 10);
 
-      const paymentReview = document.getElementById('payment-review');
-      const checkoutPreview = document.getElementById('checkout-preview');
-      const checkoutHeading = document.getElementById('checkout-heading');
-      const continueLink = document.getElementById('continue-to-payment');
-
-      function showPaymentStep(moveFocus = false) {
-        const isCheckout = location.hash === '#checkout';
-        paymentReview.hidden = isCheckout;
-        checkoutPreview.hidden = !isCheckout;
-        if (moveFocus) {
-          (isCheckout ? checkoutHeading : continueLink).focus();
-        }
-      }
-
       document.getElementById('plan-review').hidden = false;
-      showPaymentStep();
-      window.addEventListener('hashchange', () => showPaymentStep(true));
     }
   </script>
   <script>
